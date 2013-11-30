@@ -1,4 +1,4 @@
-hypermark_hyper_serializer
+hypermark_hyperjson_serializer
 ==========================
 
-Hyper serializer for hypermark
+[hyper+json](https://github.com/timshadel/hyper) serializer for [hypermark](https://github.com/CamShaft/hypermark.erl)
