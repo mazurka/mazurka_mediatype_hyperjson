@@ -1,0 +1,10 @@
+{application, mazurka_hyperjson_serializer, [
+  {description, "hyper+json serializer for mazurka"},
+  {vsn, "0.1"},
+  {modules, []},
+  {registered, []},
+  {applications, [
+    kernel,
+    stdlib
+  ]}
+]}.

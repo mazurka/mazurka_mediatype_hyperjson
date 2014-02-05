@@ -1,4 +1,4 @@
--module(hypermark_hyperjson_serializer).
+-module(mazurka_hyperjson_serializer).
 
 -export([serialize/1]).
 -export([serialize/2]).
