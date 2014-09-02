@@ -49,10 +49,10 @@ expressions ->
   ['$1'].
 expressions ->
   expression expressions :
-  ['$1', '$2'].
+  ['$1' | '$2'].
 expressions ->
   expression ',' expressions :
-  ['$1', '$3'].
+  ['$1' | '$3'].
 
 expression ->
   expression '+' expression :
