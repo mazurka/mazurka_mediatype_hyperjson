@@ -1,0 +1,35 @@
+#{
+  children => #{
+    <<"this">> => #{
+      children => #{
+        <<"is">> => #{
+          children => #{
+            <<"a">> => #{
+              children => #{
+                <<"deep">> => #{
+                  children => #{
+                    <<"path">> => #{
+                      line => 6,
+                      type => literal,
+                      value => true
+                    }
+                  },
+                  line => 5,
+                  type => map
+                }
+              },
+              line => 4,
+              type => map
+            }
+          },
+          line => 3,
+          type => map
+        }
+      },
+      line => 2,
+      type => map
+    }
+  },
+  line => 1,
+  type => map
+}.

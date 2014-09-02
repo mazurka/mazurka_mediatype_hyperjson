@@ -1,0 +1,34 @@
+#{
+  children => #{
+    <<"account">> => #{
+      children => #{
+        0 => #{
+          children => #{
+            0 => #{
+              line => 2,
+              type => variable,
+              value => <<"UserID">>
+            }
+          },
+          type => call,
+          value => {'@user',get}
+        },
+        1 => #{
+          children => #{
+            <<"name">> => #{
+              line => 3,
+              type => variable,
+              value => <<"UserName">>
+            }
+          },
+          line => 2,
+          type => map
+        }
+      },
+      type => call,
+      value => {global__,add}
+    }
+  },
+  line => 1,
+  type => map
+}.

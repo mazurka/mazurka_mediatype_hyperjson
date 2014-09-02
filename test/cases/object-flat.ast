@@ -1,0 +1,16 @@
+#{
+  children => #{
+    12.45 => #{
+      line => 3,
+      type => literal,
+      value => <<"hello world!">>
+    },
+    <<"test">> => #{
+      line => 2,
+      type => literal,
+      value => 123
+    }
+  },
+  line => 1,
+  type => map
+}.

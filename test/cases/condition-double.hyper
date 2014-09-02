@@ -1,0 +1,3 @@
+{
+  create: users.can_create(UserID) ? @users.create() : @users.create_annonymous()
+}

@@ -1,0 +1,4 @@
+{
+  test: 123
+  12.45: "hello world!"
+}

@@ -1,0 +1,34 @@
+#{
+  children => #{
+    <<"name">> => #{
+      children => #{
+        0 => #{
+          children => #{
+            0 => #{
+              line => 2,
+              type => variable,
+              value => <<"UserId">>
+            }
+          },
+          type => call,
+          value => {'@user',get}
+        },
+        1 => #{
+          children => #{
+            0 => #{
+              line => 2,
+              type => literal,
+              value => <<"name">>
+            }
+          },
+          type => list,
+          line => 2
+        }
+      },
+      type => call,
+      value => {internal__,'append-hash'}
+    }
+  },
+  line => 1,
+  type => map
+}.

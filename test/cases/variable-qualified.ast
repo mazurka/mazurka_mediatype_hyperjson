@@ -1,0 +1,23 @@
+#{
+  children => #{
+    <<"test">> => #{
+      children => #{
+        0 => #{
+          line => 2,
+          type => literal,
+          value => <<"Request">>
+        },
+        1 => #{
+          line => 2,
+          type => literal,
+          value => <<"Accepts">>
+        }
+      },
+      line => 2,
+      type => call,
+      value => {global__,resolve}
+    }
+  },
+  line => 1,
+  type => map
+}.

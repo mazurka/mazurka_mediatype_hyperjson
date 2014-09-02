@@ -1,0 +1,27 @@
+#{
+  children => #{
+    <<"create">> => #{
+      children => #{
+        0 => #{
+          children => #{
+            0 => #{
+              line => 2,
+              type => variable,
+              value => <<"UserID">>
+            }
+          },
+          type => call,
+          value => {user,can_create}
+        },
+        1 => #{
+          children => #{},
+          type => call,
+          value => {'@users',create}
+        }
+      },
+      type => 'cond'
+    }
+  },
+  line => 1,
+  type => map
+}.

@@ -1,0 +1,3 @@
+{
+  create: user.can_create(UserID) ? @users.create()
+}

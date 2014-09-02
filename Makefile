@@ -1,4 +1,4 @@
-PROJECT = mazurka_hyperjson_serializer
+PROJECT = mazurka_hyperjson
 
 # Dependencies
 
@@ -10,3 +10,11 @@ dep_fast_key = pkg://fast_key master
 dep_jsx = pkg://jsx master
 
 include erlang.mk
+
+# noop
+test: all eunit
+
+eunit:
+	@rebar eunit
+
+.PHONY: eunit
