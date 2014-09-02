@@ -1,13 +1,13 @@
--module(mazurka_hyperjson).
+-module(mazurka_mediatype_hyperjson).
 
 -export([parse/2]).
 -export([parse_file/2]).
 -export([serialize/1]).
 
 parse(Src, _Opts) ->
-  case mazurka_hyperjson_lexer:string(to_string(Src)) of
+  case mazurka_mediatype_hyperjson_lexer:string(to_string(Src)) of
     {ok, Tokens, _} ->
-      mazurka_hyperjson_parser:parse(Tokens);
+      mazurka_mediatype_hyperjson_parser:parse(Tokens);
     Error ->
       Error
   end.

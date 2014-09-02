@@ -1,4 +1,4 @@
-PROJECT = mazurka_hyperjson
+PROJECT = mazurka_mediatype_hyperjson
 
 # Dependencies
 

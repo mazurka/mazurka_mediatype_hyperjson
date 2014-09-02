@@ -26,13 +26,13 @@ lex(Test) ->
   Src = decode(Bin),
   {ok, Out} = file:consult(Test ++ ".stream"),
 
-  {ok, Tokens, _} = mazurka_hyperjson_lexer:string(Src),
+  {ok, Tokens, _} = mazurka_mediatype_hyperjson_lexer:string(Src),
   Out =:= Tokens orelse ?debugFmt("~n~n  Actual:~n~n  ~p~n", [Tokens]),
   ?assertEqual(Out, Tokens),
   Tokens.
 
 parse(Test) ->
-  {ok, Ast} = mazurka_hyperjson:parse_file(Test ++ ".hyper", []),
+  {ok, Ast} = mazurka_mediatype_hyperjson:parse_file(Test ++ ".hyper", []),
   {ok, [Out]} = case file:consult(Test ++ ".ast") of
     {error, enoent} ->
       {ok, [#{}]};
