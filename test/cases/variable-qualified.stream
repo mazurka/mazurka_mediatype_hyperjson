@@ -1,7 +1,7 @@
 {'{',1}.
-{atom,2,<<"test">>}.
+{symbol,2,<<"test">>}.
 {':',2}.
-{var,2,<<"Request">>}.
+{symbol,2,<<"Request">>}.
 {'/',2}.
-{var,2,<<"Accepts">>}.
+{symbol,2,<<"Accepts">>}.
 {'}',3}.

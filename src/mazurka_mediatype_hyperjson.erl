@@ -3,6 +3,9 @@
 -export([parse/2]).
 -export([parse_file/2]).
 -export([serialize/1]).
+-ifdef(TEST).
+-export([to_string/1]).
+-endif.
 
 parse(Src, _Opts) ->
   case mazurka_mediatype_hyperjson_lexer:string(to_string(Src)) of
@@ -16,8 +19,8 @@ parse_file(File, Opts) ->
   case read_file(File) of
     {ok, Src} ->
       parse(Src, Opts);
-     Error ->
-       Error
+    Error ->
+      Error
   end.
 
 read_file(File) ->

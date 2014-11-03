@@ -9,19 +9,18 @@ properties
 expression
 expressions
 literal
-variables
 variable
 call
 funcall
 hash
 path
+dotpath
 .
 
 Terminals
 
 string
-atom
-var
+symbol
 integer
 float
 boolean
@@ -55,6 +54,9 @@ expressions ->
   ['$1' | '$3'].
 
 expression ->
+  expression dotpath :
+  dotpath('$1', '$2').
+expression ->
   expression '+' expression :
   #{
     type => call,
@@ -67,16 +69,6 @@ expression ->
 expression ->
   conditional :
   '$1'.
-expression ->
-  expression '.' literal :
-  #{
-    type => call,
-    value => {global__, get},
-    children => #{
-      0 => '$3',
-      1 => '$1'
-    }
-  }.
 expression ->
   object :
   '$1'.
@@ -147,7 +139,7 @@ conditional ->
   }.
 
 comprehension ->
-  '[' expression '||' var '<-' expression ']' :
+  '[' expression '||' symbol '<-' expression ']' :
   #{
     type => comprehension,
     line => ?line('$1'),
@@ -167,19 +159,22 @@ properties ->
   property :
   ['$1'].
 properties ->
-  property properties :
-  ['$1' | '$2'].
-properties ->
   property ',' properties :
   ['$1' | '$3'].
+properties ->
+  property properties :
+  ['$1' | '$2'].
 
 property ->
   literal ':' expression :
   {?literal('$1'), '$3'}.
+property ->
+  symbol ':' expression :
+  {?value('$1'), '$3'}.
+property ->
+  '(' expression ')' ':' expression :
+  {'$2', '$5'}.
 
-literal ->
-  atom :
-  to_map('$1', literal).
 literal ->
   string :
   to_map('$1', literal).
@@ -193,21 +188,11 @@ literal ->
   boolean :
   to_map('$1', literal).
 
-variables ->
-  variable :
-  ['$1'].
-variables ->
-  variable variables :
-  ['$1' | '$2'].
-variables ->
-  variable ',' variables :
-  ['$1' | '$3'].
-
 variable ->
-  var :
+  symbol :
   to_map('$1', variable).
 variable ->
-  var '/' var :
+  symbol '/' symbol :
   #{
     line => ?line('$1'),
     type => call,
@@ -233,14 +218,14 @@ call ->
   }.
 
 funcall ->
-  atom '.' atom '(' ')' :
+  symbol ':' symbol '(' ')' :
   #{
     type => call,
     value => to_mf('$1', '$3'),
     children => #{}
   }.
 funcall ->
-  atom '.' atom '(' variables ')' :
+  symbol ':' symbol '(' expressions ')' :
   #{
     type => call,
     value => to_mf('$1', '$3'),
@@ -256,11 +241,24 @@ hash ->
   }.
 
 path ->
-  '/' literal :
-  ['$2'].
+  '/' symbol :
+  [to_map('$2', literal)].
 path ->
-  '/' literal path :
-  ['$2' | '$3'].
+  '/' symbol path :
+  [to_map('$2', literal) | '$3'].
+
+dotpath ->
+  '.' symbol :
+  [to_map('$2', literal)].
+dotpath ->
+  '.' '(' expression ')' :
+  ['$3'].
+dotpath ->
+  '.' symbol dotpath :
+  [to_map('$2', literal) | '$3'].
+dotpath ->
+  '.' '(' expression ')' dotpath :
+  ['$3' | '$4'].
 
 Erlang code.
 
@@ -270,6 +268,18 @@ Erlang code.
 
 to_map({_, Line, Value}, Type) ->
   #{type => Type, line => Line, value => Value}.
+
+dotpath(A, []) ->
+  A;
+dotpath(Parent, [Key|Rest]) ->
+  dotpath(#{
+    type => call,
+    value => {global__, get},
+    children => #{
+      0 => Key,
+      1 => Parent
+    }
+  }, Rest).
 
 format_properties([], Map) ->
   Map;

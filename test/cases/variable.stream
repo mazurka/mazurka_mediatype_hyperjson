@@ -1,11 +1,11 @@
 {'{',1}.
-{atom,2,<<"test">>}.
+{symbol,2,<<"test">>}.
 {':',2}.
-{var,2,<<"Test">>}.
+{symbol,2,<<"Test">>}.
 {'.',2}.
-{atom,2,<<"foo">>}.
+{symbol,2,<<"foo">>}.
 {'.',2}.
-{atom,2,<<"bar">>}.
+{symbol,2,<<"bar">>}.
 {'.',2}.
-{atom,2,<<"baz">>}.
+{symbol,2,<<"baz">>}.
 {'}',3}.

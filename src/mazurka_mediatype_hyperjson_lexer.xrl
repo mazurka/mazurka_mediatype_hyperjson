@@ -10,9 +10,7 @@ WS = (\s|\t|\r|\n|,)
 C = ({U}|{L})
 Delim = [\s,]*
 
-Atom = [a-z@][0-9a-zA-Z_\-]*
-Var = [A-Z_][0-9a-zA-Z_]*
-NSVar = ({Var}|{Var}\/{Var})
+Symbol = [a-zA-Z_\-@][0-9a-zA-Z_\-]*
 Float = (\+|-)?[0-9]+\.[0-9]+((E|e)(\+|-)?[0-9]+)?
 
 Rules.
@@ -92,11 +90,7 @@ false                                :  {token, {boolean,
                                                 TokenLine,
                                                 list_to_float(TokenChars)}}.
 
-{Atom}                               :  {token, {atom,
-                                                 TokenLine,
-                                                 unicode(TokenChars)}}.
-
-{Var}                                :  {token, {var,
+{Symbol}                             :  {token, {symbol,
                                                  TokenLine,
                                                  unicode(TokenChars)}}.
 

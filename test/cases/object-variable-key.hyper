@@ -1,0 +1,4 @@
+{
+  (variable): "output"
+  (mymod:myfun()): "testing"
+}

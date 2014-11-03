@@ -1,0 +1,17 @@
+#{
+  children => #{
+    #{line => 2, type => variable, value => <<"variable">>} => #{
+      line => 2,
+      type => literal,
+      value => <<"output">>
+    },
+    %% TODO why doesn't call have a line number?
+    #{type => call, value => {mymod, myfun}, children => #{}} => #{
+      line => 3,
+      type => literal,
+      value => <<"testing">>
+    }
+  },
+  line => 1,
+  type => map
+}.

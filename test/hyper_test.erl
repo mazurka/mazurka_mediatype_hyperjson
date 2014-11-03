@@ -23,7 +23,7 @@ parser_test_() ->
 
 lex(Test) ->
   {ok, Bin} = file:read_file(Test ++ ".hyper"),
-  Src = decode(Bin),
+  Src = mazurka_mediatype_hyperjson:to_string(Bin),
   {ok, Out} = file:consult(Test ++ ".stream"),
 
   {ok, Tokens, _} = mazurka_mediatype_hyperjson_lexer:string(Src),
@@ -39,13 +39,5 @@ parse(Test) ->
     Res ->
       Res
   end,
-  Out =:= Ast orelse ?debugFmt("~n~n  Actual:~n~n  ~p~n", [Ast]),
+  Out =:= Ast orelse ?debugFmt("~n~n  Actual:~n~n  ~p~n~n  Expected:~n~n  ~p~n", [Ast, Out]),
   ?assertEqual(Out, Ast).
-
-decode(Bin) ->
-  case unicode:characters_to_list(Bin) of
-    L when is_list(L) ->
-      L;
-    _ ->
-      binary_to_list(Bin)
-  end.

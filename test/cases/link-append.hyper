@@ -1,5 +1,5 @@
 {
-  account: @user.get(UserID) + {
+  account: @user:get(UserID) + {
     name: UserName
   }
 }
