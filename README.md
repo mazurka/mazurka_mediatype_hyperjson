@@ -11,10 +11,42 @@ Examples
 ```js
 {
   collection: [
-    @users.get(User.id) + {
-      name: User.name
+    @users:get(user) + {
+      name: users:get_name(user)
     }
-  || User <- Users]
-  create: @users.create()
+  || user <- users:list()]
+  create: @users:create()
+}
+```
+
+results in
+
+```json
+{
+  "href": "/users",
+  "collection": [
+    {
+      "href": "/users/1",
+      "name": "Joe"
+    },
+    {
+      "href": "/users/2",
+      "name": "Mike"
+    },
+    {
+      "href": "/users/2",
+      "name": "Robert"
+    }
+  ],
+  "create": {
+    "action": "/users",
+    "method": "POST",
+    "input": {
+      "name": {
+        "type": "text",
+        "required": true
+      }
+    }
+  }
 }
 ```
