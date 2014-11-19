@@ -222,6 +222,22 @@ call ->
   }.
 
 funcall ->
+  symbol '(' ')' :
+  #{
+    type => call,
+    line => ?line('$1'),
+    value => to_mf({symbol, ?line('$1'), <<"__global">>}, '$1'),
+    children => #{}
+  }.
+funcall ->
+  symbol '(' expressions ')' :
+  #{
+    type => call,
+    line => ?line('$1'),
+    value => to_mf({symbol, ?line('$1'), <<"__global">>}, '$1'),
+    children => list_to_map('$3')
+  }.
+funcall ->
   symbol ':' symbol '(' ')' :
   #{
     type => call,
