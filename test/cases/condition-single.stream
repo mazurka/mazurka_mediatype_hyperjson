@@ -8,9 +8,8 @@
 {symbol,2,<<"UserID">>}.
 {')',2}.
 {'?',2}.
-{symbol,2,<<"@users">>}.
-{':',2}.
-{symbol,2,<<"create">>}.
+{'@',2}.
+{symbol,2,<<"users_create_form">>}.
 {'(',2}.
 {')',2}.
 {'}',3}.

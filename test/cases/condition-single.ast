@@ -10,15 +10,29 @@
               value => <<"UserID">>
             }
           },
+          line => 2,
           type => call,
           value => {user,can_create}
         },
         1 => #{
-          children => #{},
+          children => #{
+            0 => #{
+              line => 2,
+              type => literal,
+              value => users_create_form
+            },
+            1 => #{
+              children => #{},
+              line => 2,
+              type => list
+            }
+          },
+          line => 2,
           type => call,
-          value => {'@users',create}
+          value => {'__internal', 'resolve-link'}
         }
       },
+      line => 2,
       type => 'cond'
     }
   },

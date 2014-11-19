@@ -11,6 +11,7 @@
       value => 2.1
     }
   },
+  line => 1,
   type => call,
-  value => {global__,add}
+  value => {'__global',add}
 }.

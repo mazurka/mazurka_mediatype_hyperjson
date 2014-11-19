@@ -6,12 +6,24 @@
           children => #{
             0 => #{
               line => 2,
-              type => variable,
-              value => <<"UserID">>
+              type => literal,
+              value => user_read
+            },
+            1 => #{
+              line => 2,
+              type => list,
+              children => #{
+                0 => #{
+                  line => 2,
+                  type => variable,
+                  value => <<"UserID">>
+                }
+              }
             }
           },
+          line => 2,
           type => call,
-          value => {'@user',get}
+          value => {'__internal', 'resolve-link'}
         },
         1 => #{
           children => #{
@@ -25,8 +37,9 @@
           type => map
         }
       },
+      line => 2,
       type => call,
-      value => {global__,add}
+      value => {'__global',add}
     }
   },
   line => 1,

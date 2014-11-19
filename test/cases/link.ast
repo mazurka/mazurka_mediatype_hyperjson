@@ -4,12 +4,24 @@
       children => #{
         0 => #{
           line => 2,
-          type => variable,
-          value => <<"UserID">>
+          type => literal,
+          value => user_read
+        },
+        1 => #{
+          children => #{
+            0 => #{
+              line => 2,
+              type => variable,
+              value => <<"UserID">>
+            }
+          },
+          line => 2,
+          type => list
         }
       },
+      line => 2,
       type => call,
-      value => {'@user',get}
+      value => {'__internal', 'resolve-link'}
     }
   },
   line => 1,

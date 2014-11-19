@@ -10,7 +10,7 @@ WS = (\s|\t|\r|\n|,)
 C = ({U}|{L})
 Delim = [\s,]*
 
-Symbol = [a-zA-Z_\-@][0-9a-zA-Z_\-]*
+Symbol = [a-zA-Z_\-][0-9a-zA-Z_\-]*
 Float = (\+|-)?[0-9]+\.[0-9]+((E|e)(\+|-)?[0-9]+)?
 
 Rules.
@@ -65,6 +65,9 @@ Rules.
                                                  TokenLine}}.
 
 \/                                   :  {token, {'/',
+                                                 TokenLine}}.
+
+\@                                   :  {token, {'@',
                                                  TokenLine}}.
 
 <\-                                  :  {token, {'<-',

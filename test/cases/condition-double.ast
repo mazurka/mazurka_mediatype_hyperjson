@@ -3,6 +3,7 @@
     <<"create">> => #{
       children => #{
         0 => #{
+          line => 2,
           type => call,
           value => {users, can_create},
           children => #{
@@ -14,16 +15,41 @@
           }
         },
         1 => #{
+          line => 2,
           type => call,
-          value => {'@users', create},
-          children => #{}
+          value => {'__internal', 'resolve-link'},
+          children => #{
+            0 => #{
+              line => 2,
+              type => literal,
+              value => users_create_form
+            },
+            1 => #{
+              children => #{},
+              line => 2,
+              type => list
+            }
+          }
         },
         2 => #{
+          line => 2,
           type => call,
-          value => {'@users', create_annonymous},
-          children => #{}
+          value => {'__internal', 'resolve-link'},
+          children => #{
+            0 => #{
+              line => 2,
+              type => literal,
+              value => users_create_annonymous_form
+            },
+            1 => #{
+              children => #{},
+              line => 2,
+              type => list
+            }
+          }
         }
       },
+      line => 2,
       type => 'cond'
     }
   },

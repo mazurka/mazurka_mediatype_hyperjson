@@ -1,9 +1,8 @@
 {'{',1}.
 {string,2,<<"account">>}.
 {':',2}.
-{symbol,2,<<"@user">>}.
-{':',2}.
-{symbol,2,<<"get">>}.
+{'@',2}.
+{symbol,2,<<"user_read">>}.
 {'(',2}.
 {symbol,2,<<"UserID">>}.
 {')',2}.

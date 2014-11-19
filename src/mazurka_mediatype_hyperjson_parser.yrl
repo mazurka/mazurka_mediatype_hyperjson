@@ -39,6 +39,7 @@ boolean
 '#'
 '/'
 '+'
+'@'
 .
 
 Rootsymbol expression.
@@ -60,7 +61,8 @@ expression ->
   expression '+' expression :
   #{
     type => call,
-    value => {global__, add},
+    line => ?line('$2'),
+    value => {'__global', add},
     children => #{
       0 => '$1',
       1 => '$3'
@@ -122,6 +124,7 @@ conditional ->
   expression '?' expression :
   #{
     type => 'cond',
+    line => ?line('$2'),
     children => #{
       0 => '$1',
       1 => '$3'
@@ -131,6 +134,7 @@ conditional ->
   expression '?' expression ':' expression :
   #{
     type => 'cond',
+    line => ?line('$2'),
     children => #{
       0 => '$1',
       1 => '$3',
@@ -196,7 +200,7 @@ variable ->
   #{
     line => ?line('$1'),
     type => call,
-    value => {global__, resolve},
+    value => {'__internal', resolve},
     children => #{
       0 => to_map('$1', literal),
       1 => to_map('$3', literal)
@@ -210,7 +214,7 @@ call ->
   funcall hash :
   #{
     type => call,
-    value => {internal__, 'append-hash'},
+    value => {'__internal', 'append-hash'},
     children => #{
       0 => '$1',
       1 => '$2'
@@ -221,6 +225,7 @@ funcall ->
   symbol ':' symbol '(' ')' :
   #{
     type => call,
+    line => ?line('$1'),
     value => to_mf('$1', '$3'),
     children => #{}
   }.
@@ -228,8 +233,39 @@ funcall ->
   symbol ':' symbol '(' expressions ')' :
   #{
     type => call,
+    line => ?line('$1'),
     value => to_mf('$1', '$3'),
     children => list_to_map('$5')
+  }.
+funcall ->
+  '@' symbol '(' ')' :
+  #{
+    type => call,
+    line => ?line('$1'),
+    value => {'__internal', 'resolve-link'},
+    children => #{
+      0 => to_atom_map('$2'),
+      1 => #{
+        type => list,
+        line => ?line('$1'),
+        children => #{}
+      }
+    }
+  }.
+funcall ->
+  '@' symbol '(' expressions ')' :
+  #{
+    type => call,
+    line => ?line('$1'),
+    value => {'__internal', 'resolve-link'},
+    children => #{
+      0 => to_atom_map('$2'),
+      1 => #{
+        type => list,
+        line => ?line('$1'),
+        children => list_to_map('$4')
+      }
+    }
   }.
 
 hash ->
@@ -295,6 +331,11 @@ list_to_map([V|Rest], Acc) ->
   Acc2 = maps:put(length(Rest), V, Acc),
   list_to_map(Rest, Acc2).
 
+to_atom(Atom) ->
+  list_to_atom(binary_to_list(?value(Atom))).
+
+to_atom_map({Type, Line, _Value} = Atom) ->
+  to_map({Type, Line, to_atom(Atom)}, literal).
+
 to_mf(Mod, Fun) ->
-  {list_to_atom(binary_to_list(?value(Mod))),
-   list_to_atom(binary_to_list(?value(Fun)))}.
+  {to_atom(Mod), to_atom(Fun)}.

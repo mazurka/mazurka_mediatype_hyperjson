@@ -6,12 +6,24 @@
           children => #{
             0 => #{
               line => 2,
-              type => variable,
-              value => <<"UserId">>
+              type => literal,
+              value => user_read
+            },
+            1 => #{
+              children => #{
+                0 => #{
+                  line => 2,
+                  type => variable,
+                  value => <<"UserId">>
+                }
+              },
+              line => 2,
+              type => list
             }
           },
+          line => 2,
           type => call,
-          value => {'@user',get}
+          value => {'__internal', 'resolve-link'}
         },
         1 => #{
           children => #{
@@ -26,7 +38,7 @@
         }
       },
       type => call,
-      value => {internal__,'append-hash'}
+      value => {'__internal','append-hash'}
     }
   },
   line => 1,

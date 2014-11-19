@@ -15,7 +15,7 @@
       },
       line => 2,
       type => call,
-      value => {global__,resolve}
+      value => {'__internal',resolve}
     }
   },
   line => 1,
