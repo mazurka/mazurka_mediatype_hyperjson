@@ -85,6 +85,10 @@ false                                :  {token, {boolean,
                                                 TokenLine,
                                                 parse_string(TokenChars)}}.
 
+\'[^\']*\'                           :  {token, {string,
+                                                TokenLine,
+                                                parse_string(TokenChars)}}.
+
 %%% numbers
 {D}+                                 :  {token, {integer,
                                                 TokenLine,
