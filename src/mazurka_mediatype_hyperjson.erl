@@ -33,7 +33,17 @@ read_file(File) ->
   end.
 
 serialize(Obj) ->
-  jsx:encode(Obj, []).
+  jsx:encode(remove_undefined(Obj), []).
+
+remove_undefined(Map) ->
+  maps:fold(fun
+    (_, undefined, Acc) ->
+      Acc;
+    (K, V, Acc) when is_map(V) ->
+      fast_key:set(K, remove_undefined(V), Acc);
+    (K, V, Acc) ->
+      fast_key:set(K, V, Acc)
+  end, #{}, Map).
 
 to_string(Bin) when is_list(Bin) ->
   Bin;
