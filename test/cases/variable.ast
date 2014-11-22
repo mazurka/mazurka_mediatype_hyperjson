@@ -28,15 +28,15 @@
                 }
               },
               type => call,
-              value => {global__,get}
+              value => {'__global',get}
             }
           },
           type => call,
-          value => {global__,get}
+          value => {'__global',get}
         }
       },
       type => call,
-      value => {global__,get}
+      value => {'__global',get}
     }
   },
   line => 1,

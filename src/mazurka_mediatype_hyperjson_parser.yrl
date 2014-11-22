@@ -326,7 +326,7 @@ dotpath(A, []) ->
 dotpath(Parent, [Key|Rest]) ->
   dotpath(#{
     type => call,
-    value => {global__, get},
+    value => {'__global', get},
     children => #{
       0 => Key,
       1 => Parent
