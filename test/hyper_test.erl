@@ -33,7 +33,7 @@ lex(Test) ->
 
 parse(Test) ->
   {ok, Ast} = mazurka_mediatype_hyperjson:parse_file(Test ++ ".hyper", []),
-  {ok, [Out]} = case file:consult(Test ++ ".ast") of
+  {ok, Out} = case file:consult(Test ++ ".ast") of
     {error, enoent} ->
       {ok, [#{}]};
     Res ->

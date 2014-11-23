@@ -1,0 +1,43 @@
+#{
+  children => #{
+    0 => #{
+      children => #{},
+      line => 1,
+      type => call,
+      value => {'__global',call}
+    }
+  },
+  line => 1,
+  type => assign,
+  value => <<"foo">>
+}.
+
+#{
+  children => #{
+    0 => #{
+      line => 2,
+      type => literal,
+      value => 456
+    }
+  },
+  line => 2,
+  type => assign,
+  value => <<"bar">>
+}.
+
+#{
+  children => #{
+    <<"bar">> => #{
+      line => 5,
+      type => variable,
+      value => <<"bar">>
+    },
+    <<"foo">> => #{
+      line => 4,
+      type => variable,
+      value => <<"foo">>
+    }
+  },
+  line => 3,
+  type => map
+}.

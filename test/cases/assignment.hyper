@@ -1,0 +1,6 @@
+foo = call()
+bar = 456
+{
+  foo: foo
+  bar: bar
+}

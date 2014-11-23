@@ -1,11 +1,13 @@
 Nonterminals
 
+view
 object
 array
 comprehension
 conditional
 property
 properties
+assignment
 expression
 expressions
 literal
@@ -31,6 +33,7 @@ boolean
 ','
 ':'
 '<-'
+'='
 '||'
 '?'
 '('
@@ -42,7 +45,25 @@ boolean
 '@'
 .
 
-Rootsymbol expression.
+Rootsymbol view.
+
+view ->
+  expression :
+  ['$1'].
+view ->
+  assignment view :
+  ['$1' | '$2'].
+
+assignment ->
+  symbol '=' expression :
+  #{
+    type => assign,
+    line => ?line('$1'),
+    value => ?value('$1'),
+    children => #{
+      0 => '$3'
+    }
+  }.
 
 expressions ->
   expression :
