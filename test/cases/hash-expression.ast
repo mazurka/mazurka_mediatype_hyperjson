@@ -1,0 +1,57 @@
+#{
+  children => #{
+    0 => #{
+      line => 1,
+      type => literal,
+      value => <<"name">>
+    }
+  },
+  line => 1,
+  type => assign,
+  value => <<"name">>
+}.
+
+#{
+  children => #{
+    #{
+      line => 4,
+      type => variable,
+      value => <<"name">>
+    } => #{
+      children => #{
+        0 => #{
+          children => #{
+            0 => #{
+              line => 4,
+              type => literal,
+              value => user_read
+            },
+            1 => #{
+              children => #{},
+              line => 4,
+              type => list
+            }
+          },
+          line => 4,
+          type => call,
+          value => {'__internal','resolve-link'}
+        },
+        1 => #{
+          children => #{
+            0 => #{
+              line => 4,
+              type => variable,
+              value => <<"name">>
+            }
+          },
+          line => 4,
+          type => list
+        }
+      },
+      type => call,
+      value => {'__internal','append-hash'}
+    }
+  },
+  line => 3,
+  type => map
+}.

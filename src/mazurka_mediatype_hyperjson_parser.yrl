@@ -317,8 +317,14 @@ path ->
   '/' symbol :
   [to_map('$2', literal)].
 path ->
+  '/' '(' expression ')' :
+  ['$3'].
+path ->
   '/' symbol path :
   [to_map('$2', literal) | '$3'].
+path ->
+  '/' '(' expression ')' path :
+  ['$3' | '$4'].
 
 dotpath ->
   '.' symbol :
