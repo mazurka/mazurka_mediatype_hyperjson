@@ -1,0 +1,5 @@
+{
+  collection: [
+    #/social/(network)
+  || networks <- ['twitter', 'facebook']]
+}

@@ -114,6 +114,25 @@ expression ->
 expression ->
   call :
   '$1'.
+expression ->
+  hash :
+  #{
+    type => call,
+    value => {'__internal', 'append-hash'},
+    children => #{
+      0 => #{
+        type => map,
+        children => #{
+          <<"href">> => #{
+            type => literal,
+            line => 0,
+            value => <<>>
+          }
+        }
+      },
+      1 => '$1'
+    }
+  }.
 
 object ->
   '{' '}' :

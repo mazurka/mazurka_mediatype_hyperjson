@@ -1,0 +1,66 @@
+#{
+  children => #{
+    <<"collection">> => #{
+      children => #{
+        assignment => #{
+          children => #{
+            0 => #{
+              children => #{
+                0 => #{
+                  line => 4,
+                  type => literal,
+                  value => <<"twitter">>
+                },
+                1 => #{
+                  line => 4,
+                  type => literal,
+                  value => <<"facebook">>
+                }
+              },
+              line => 4,
+              type => list
+            }
+          },
+          type => assign,
+          value => <<"networks">>
+        },
+        expression => #{
+          children => #{
+            0 => #{
+              children => #{
+                <<"href">> => #{
+                  line => 0,
+                  type => literal,
+                  value => <<>>
+                }
+              },
+              type => map
+            },
+            1 => #{
+              children => #{
+                0 => #{
+                  line => 3,
+                  type => literal,
+                  value => <<"social">>
+                },
+                1 => #{
+                  line => 3,
+                  type => variable,
+                  value => <<"network">>
+                }
+              },
+              line => 3,
+              type => list
+            }
+          },
+          type => call,
+          value => {'__internal','append-hash'}
+        }
+      },
+      line => 2,
+      type => comprehension
+    }
+  },
+  line => 1,
+  type => map
+}.
