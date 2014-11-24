@@ -1,0 +1,60 @@
+#{
+  type => call,
+  value => {'__global', 'proplist_to_map'},
+  children => #{
+    0 => #{
+      children => #{
+        assignment => #{
+          children => #{
+            0 => #{
+              line => 3,
+              type => variable,
+              value => <<"props">>
+            }
+          },
+          type => assign,
+          value => <<"prop">>
+        },
+        expression => #{
+          children => #{
+            0 => #{
+              children => #{
+                0 => #{
+                  line => 2,
+                  type => literal,
+                  value => <<"key">>
+                },
+                1 => #{
+                  line => 2,
+                  type => variable,
+                  value => <<"prop">>
+                }
+              },
+              type => call,
+              value => {'__global',get}
+            },
+            1 => #{
+              children => #{
+                0 => #{
+                  line => 2,
+                  type => literal,
+                  value => <<"value">>
+                },
+                1 => #{
+                  line => 2,
+                  type => variable,
+                  value => <<"prop">>
+                }
+              },
+              type => call,
+              value => {'__global',get}
+            }
+          },
+          type => tuple
+        }
+      },
+      line => 1,
+      type => comprehension
+    }
+  }
+}.

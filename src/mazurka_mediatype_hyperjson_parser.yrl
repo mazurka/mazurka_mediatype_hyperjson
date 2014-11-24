@@ -202,6 +202,28 @@ comprehension ->
       expression => '$2'
     }
   }.
+comprehension ->
+  '{' property '||' symbol '<-' expression '}' :
+  #{
+    type => call,
+    value => {'__global', 'proplist_to_map'},
+    children => #{
+      0 => #{
+        type => comprehension,
+        line => ?line('$1'),
+        children => #{
+          assignment => #{
+            type => assign,
+            value => ?value('$4'),
+            children => #{
+              0 => '$6'
+            }
+          },
+          expression => tuple_to_map('$2')
+        }
+      }
+    }
+  }.
 
 properties ->
   property :
@@ -388,6 +410,9 @@ format_properties([], Map) ->
 format_properties([{Key, Expr}|KVs], Map) ->
   Map2 = maps:put(Key, Expr, Map),
   format_properties(KVs, Map2).
+
+tuple_to_map(Tuple) ->
+  #{type => tuple, children => list_to_map(tuple_to_list(Tuple))}.
 
 list_to_map(List) ->
   list_to_map(lists:reverse(List), #{}).
