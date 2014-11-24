@@ -76,6 +76,9 @@ Rules.
 =                                    :  {token, {'=',
                                                  TokenLine}}.
 
+&                                    :  {token, {'&',
+                                                 TokenLine}}.
+
 true                                 :  {token, {boolean,
                                                  TokenLine,
                                                  true}}.

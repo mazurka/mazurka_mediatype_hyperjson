@@ -1,0 +1,5 @@
+user = users:get() &
+
+{
+  name: user.name
+}

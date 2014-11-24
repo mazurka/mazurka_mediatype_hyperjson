@@ -43,6 +43,7 @@ boolean
 '/'
 '+'
 '@'
+'&'
 .
 
 Rootsymbol view.
@@ -107,6 +108,9 @@ expression ->
 expression ->
   variable :
   '$1'.
+expression ->
+  call '&' :
+  '$1'#{spawn => true}.
 expression ->
   call :
   '$1'.

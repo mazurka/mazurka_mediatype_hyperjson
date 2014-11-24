@@ -1,0 +1,37 @@
+#{
+  children => #{
+    0 => #{
+      children => #{},
+      line => 1,
+      spawn => true,
+      type => call,
+      value => {users,get}
+    }
+  },
+  line => 1,
+  type => assign,
+  value => <<"user">>
+}.
+
+#{
+  children => #{
+    <<"name">> => #{
+      children => #{
+        0 => #{
+          line => 4,
+          type => literal,
+          value => <<"name">>
+        },
+        1 => #{
+          line => 4,
+          type => variable,
+          value => <<"user">>
+        }
+      },
+      type => call,
+      value => {'__global',get}
+    }
+  },
+  line => 3,
+  type => map
+}.
