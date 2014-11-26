@@ -50,6 +50,45 @@
       },
       type => call,
       value => {'__internal','append-hash'}
+    },
+    <<"other">> => #{
+      children => #{
+        0 => #{
+          children => #{
+            0 => #{
+              line => 5,
+              type => literal,
+              value => user_read
+            },
+            1 => #{
+              children => #{},
+              line => 5,
+              type => list
+            }
+          },
+          line => 5,
+          type => call,
+          value => {'__internal', 'resolve-link'}
+        },
+        1 => #{
+          children => #{
+            0 => #{
+              line => 5,
+              type => variable,
+              value => <<"name">>
+            },
+            1 => #{
+              line => 5,
+              type => literal,
+              value => <<"foo">>
+            }
+          },
+          line => 5,
+          type => list
+        }
+      },
+      type => call,
+      value => {'__internal', 'append-hash'}
     }
   },
   line => 3,

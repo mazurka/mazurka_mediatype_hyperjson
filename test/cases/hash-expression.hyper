@@ -2,4 +2,5 @@ name = 'name'
 
 {
   (name): @user_read()#/(name)
+  other: @user_read()#/(name)/foo
 }

@@ -369,7 +369,7 @@ path ->
   [to_map('$2', literal) | '$3'].
 path ->
   '/' '(' expression ')' path :
-  ['$3' | '$4'].
+  ['$3' | '$5'].
 
 dotpath ->
   '.' symbol :
