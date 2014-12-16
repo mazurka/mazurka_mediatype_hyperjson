@@ -61,9 +61,9 @@ assignment ->
     type => assign,
     line => ?line('$1'),
     value => ?value('$1'),
-    children => #{
-      0 => '$3'
-    }
+    children => [
+      '$3'
+    ]
   }.
 
 expressions ->
@@ -85,10 +85,10 @@ expression ->
     type => call,
     line => ?line('$2'),
     value => {'__global', add},
-    children => #{
-      0 => '$1',
-      1 => '$3'
-    }
+    children => [
+      '$1',
+      '$3'
+    ]
   }.
 expression ->
   conditional :
@@ -119,19 +119,27 @@ expression ->
   #{
     type => call,
     value => {'__internal', 'append-hash'},
-    children => #{
-      0 => #{
+    children => [
+      #{
         type => map,
-        children => #{
-          <<"href">> => #{
-            type => literal,
-            line => 0,
-            value => <<>>
+        children => [
+          #{
+            type => tuple,
+            children => [
+              #{
+                type => literal,
+                value => <<"href">>
+              },
+              #{
+                type => literal,
+                value => <<>>
+              }
+            ]
           }
-        }
+        ]
       },
-      1 => '$1'
-    }
+      '$1'
+    ]
   }.
 
 object ->
@@ -139,14 +147,14 @@ object ->
   #{
     type => map,
     line => ?line('$1'),
-    children => #{}
+    children => []
   }.
 object ->
   '{' properties '}' :
   #{
     type => map,
     line => ?line('$1'),
-    children => format_properties('$2', #{})
+    children => format_properties('$2', [])
   }.
 
 array ->
@@ -154,14 +162,14 @@ array ->
    #{
      type => list,
      line => ?line('$1'),
-     children => #{}
+     children => []
    }.
 array ->
   '[' expressions ']' :
   #{
     type => list,
     line => ?line('$1'),
-    children => list_to_map('$2')
+    children => '$2'
   }.
 
 conditional ->
@@ -169,21 +177,21 @@ conditional ->
   #{
     type => 'cond',
     line => ?line('$2'),
-    children => #{
-      0 => '$1',
-      1 => '$3'
-    }
+    children => [
+      '$1',
+      '$3'
+    ]
   }.
 conditional ->
   expression '?' expression ':' expression :
   #{
     type => 'cond',
     line => ?line('$2'),
-    children => #{
-      0 => '$1',
-      1 => '$3',
-      2 => '$5'
-    }
+    children => [
+      '$1',
+      '$3',
+      '$5'
+    ]
   }.
 
 comprehension ->
@@ -191,38 +199,38 @@ comprehension ->
   #{
     type => comprehension,
     line => ?line('$1'),
-    children => #{
-      assignment => #{
+    children => [
+      #{
         type => assign,
         value => ?value('$4'),
-        children => #{
-          0 => '$6'
-        }
+        children => [
+          '$6'
+        ]
       },
-      expression => '$2'
-    }
+      '$2'
+    ]
   }.
 comprehension ->
   '{' property '||' symbol '<-' expression '}' :
   #{
     type => call,
     value => {'__global', 'proplist_to_map'},
-    children => #{
-      0 => #{
+    children => [
+      #{
         type => comprehension,
         line => ?line('$1'),
-        children => #{
-          assignment => #{
+        children => [
+          #{
             type => assign,
             value => ?value('$4'),
-            children => #{
-              0 => '$6'
-            }
+            children => [
+              '$6'
+            ]
           },
-          expression => tuple_to_map('$2')
-        }
+          tuple_to_map('$2')
+        ]
       }
-    }
+    ]
   }.
 
 properties ->
@@ -267,10 +275,10 @@ variable ->
     line => ?line('$1'),
     type => call,
     value => {'__internal', resolve},
-    children => #{
-      0 => to_map('$1', literal),
-      1 => to_map('$3', literal)
-    }
+    children => [
+      to_map('$1', literal),
+      to_map('$3', literal)
+    ]
   }.
 
 call ->
@@ -281,10 +289,10 @@ call ->
   #{
     type => call,
     value => {'__internal', 'append-hash'},
-    children => #{
-      0 => '$1',
-      1 => '$2'
-    }
+    children => [
+      '$1',
+      '$2'
+    ]
   }.
 
 funcall ->
@@ -293,7 +301,7 @@ funcall ->
     type => call,
     line => ?line('$1'),
     value => to_mf({symbol, ?line('$1'), <<"__global">>}, '$1'),
-    children => #{}
+    children => []
   }.
 funcall ->
   symbol '(' expressions ')' :
@@ -301,7 +309,7 @@ funcall ->
     type => call,
     line => ?line('$1'),
     value => to_mf({symbol, ?line('$1'), <<"__global">>}, '$1'),
-    children => list_to_map('$3')
+    children => '$3'
   }.
 funcall ->
   symbol ':' symbol '(' ')' :
@@ -309,7 +317,7 @@ funcall ->
     type => call,
     line => ?line('$1'),
     value => to_mf('$1', '$3'),
-    children => #{}
+    children => []
   }.
 funcall ->
   symbol ':' symbol '(' expressions ')' :
@@ -317,7 +325,7 @@ funcall ->
     type => call,
     line => ?line('$1'),
     value => to_mf('$1', '$3'),
-    children => list_to_map('$5')
+    children => '$5'
   }.
 funcall ->
   '@' symbol '(' ')' :
@@ -325,14 +333,14 @@ funcall ->
     type => call,
     line => ?line('$1'),
     value => {'__internal', 'resolve-link'},
-    children => #{
-      0 => to_atom_map('$2'),
-      1 => #{
+    children => [
+      to_atom_map('$2'),
+      #{
         type => list,
         line => ?line('$1'),
-        children => #{}
+        children => []
       }
-    }
+    ]
   }.
 funcall ->
   '@' symbol '(' expressions ')' :
@@ -340,14 +348,14 @@ funcall ->
     type => call,
     line => ?line('$1'),
     value => {'__internal', 'resolve-link'},
-    children => #{
-      0 => to_atom_map('$2'),
-      1 => #{
+    children => [
+      to_atom_map('$2'),
+      #{
         type => list,
         line => ?line('$1'),
-        children => list_to_map('$4')
+        children => '$4'
       }
-    }
+    ]
   }.
 
 hash ->
@@ -355,7 +363,7 @@ hash ->
   #{
     type => list,
     line => ?line('$1'),
-    children => list_to_map('$2')
+    children => '$2'
   }.
 
 path ->
@@ -399,28 +407,35 @@ dotpath(Parent, [Key|Rest]) ->
   dotpath(#{
     type => call,
     value => {'__global', get},
-    children => #{
-      0 => Key,
-      1 => Parent
-    }
+    children => [
+      Key,
+      Parent
+    ]
   }, Rest).
 
-format_properties([], Map) ->
-  Map;
-format_properties([{Key, Expr}|KVs], Map) ->
-  Map2 = maps:put(Key, Expr, Map),
-  format_properties(KVs, Map2).
+format_properties([], List) ->
+  lists:reverse(List);
+format_properties([{Key, Expr}|KVs], List) when is_binary(Key) ->
+  Tuple = #{
+    type => tuple,
+    children => [
+      #{type => literal, value => Key},
+      Expr
+    ]
+  },
+  format_properties(KVs, [Tuple|List]);
+format_properties([{Key, Expr}|KVs], List) ->
+  Tuple = #{
+    type => tuple,
+    children => [
+      Key,
+      Expr
+    ]
+  },
+  format_properties(KVs, [Tuple|List]).
 
 tuple_to_map(Tuple) ->
-  #{type => tuple, children => list_to_map(tuple_to_list(Tuple))}.
-
-list_to_map(List) ->
-  list_to_map(lists:reverse(List), #{}).
-list_to_map([], Acc) ->
-  Acc;
-list_to_map([V|Rest], Acc) ->
-  Acc2 = maps:put(length(Rest), V, Acc),
-  list_to_map(Rest, Acc2).
+  #{type => tuple, children => tuple_to_list(Tuple)}.
 
 to_atom(Atom) ->
   list_to_atom(binary_to_list(?value(Atom))).

@@ -1,58 +1,52 @@
 #{
-  children => #{
-    <<"create">> => #{
-      children => #{
-        0 => #{
-          line => 2,
-          type => call,
-          value => {users, can_create},
-          children => #{
-            0 => #{
-              type => variable,
-              line => 2,
-              value => <<"UserID">>
-            }
-          }
-        },
-        1 => #{
-          line => 2,
-          type => call,
-          value => {'__internal', 'resolve-link'},
-          children => #{
-            0 => #{
-              line => 2,
-              type => literal,
-              value => users_create_form
-            },
-            1 => #{
-              children => #{},
-              line => 2,
-              type => list
-            }
-          }
-        },
-        2 => #{
-          line => 2,
-          type => call,
-          value => {'__internal', 'resolve-link'},
-          children => #{
-            0 => #{
-              line => 2,
-              type => literal,
-              value => users_create_annonymous_form
-            },
-            1 => #{
-              children => #{},
-              line => 2,
-              type => list
-            }
-          }
+  children => [
+    #{
+      line => 1,
+      type => call,
+      value => {users, can_create},
+      children => [
+        #{
+          type => variable,
+          line => 1,
+          value => <<"UserID">>
         }
-      },
-      line => 2,
-      type => 'cond'
+      ]
+    },
+    #{
+      line => 1,
+      type => call,
+      value => {'__internal', 'resolve-link'},
+      children => [
+        #{
+          line => 1,
+          type => literal,
+          value => users_create_form
+        },
+        #{
+          children => [],
+          line => 1,
+          type => list
+        }
+      ]
+    },
+    #{
+      line => 1,
+      type => call,
+      value => {'__internal', 'resolve-link'},
+      children => [
+        #{
+          line => 1,
+          type => literal,
+          value => users_create_annonymous_form
+        },
+        #{
+          children => [],
+          line => 1,
+          type => list
+        }
+      ]
     }
-  },
+  ],
   line => 1,
-  type => map
+  type => 'cond'
 }.

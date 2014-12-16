@@ -1,41 +1,35 @@
 #{
-  children => #{
-    <<"create">> => #{
-      children => #{
-        0 => #{
-          children => #{
-            0 => #{
-              line => 2,
-              type => variable,
-              value => <<"UserID">>
-            }
-          },
-          line => 2,
-          type => call,
-          value => {user,can_create}
-        },
-        1 => #{
-          children => #{
-            0 => #{
-              line => 2,
-              type => literal,
-              value => users_create_form
-            },
-            1 => #{
-              children => #{},
-              line => 2,
-              type => list
-            }
-          },
-          line => 2,
-          type => call,
-          value => {'__internal', 'resolve-link'}
+  children => [
+    #{
+      children => [
+        #{
+          line => 1,
+          type => variable,
+          value => <<"UserID">>
         }
-      },
-      line => 2,
-      type => 'cond'
+      ],
+      line => 1,
+      type => call,
+      value => {user,can_create}
+    },
+    #{
+      children => [
+        #{
+          line => 1,
+          type => literal,
+          value => users_create_form
+        },
+        #{
+          children => [],
+          line => 1,
+          type => list
+        }
+      ],
+      line => 1,
+      type => call,
+      value => {'__internal', 'resolve-link'}
     }
-  },
+  ],
   line => 1,
-  type => map
+  type => 'cond'
 }.

@@ -1,43 +1,61 @@
 #{
-  children => #{
-    0 => #{
-      children => #{},
+  children => [
+    #{
+      children => [],
       line => 1,
       type => call,
       value => {'__global',call}
     }
-  },
+  ],
   line => 1,
   type => assign,
   value => <<"foo">>
 }.
 
 #{
-  children => #{
-    0 => #{
+  children => [
+    #{
       line => 2,
       type => literal,
       value => 456
     }
-  },
+  ],
   line => 2,
   type => assign,
   value => <<"bar">>
 }.
 
 #{
-  children => #{
-    <<"bar">> => #{
-      line => 5,
-      type => variable,
-      value => <<"bar">>
+  children => [
+    #{
+      type => tuple,
+      children => [
+        #{
+          type => literal,
+          value => <<"foo">>
+        },
+        #{
+          line => 4,
+          type => variable,
+          value => <<"foo">>
+        }
+      ]
     },
-    <<"foo">> => #{
-      line => 4,
-      type => variable,
-      value => <<"foo">>
+    #{
+      type => tuple,
+      children => [
+        #{
+          type => literal,
+          value => <<"bar">>
+        },
+        #{
+          line => 5,
+          type => variable,
+          value => <<"bar">>
+        }
+      ]
     }
-  },
+  ],
   line => 3,
   type => map
 }.

@@ -1,5 +1,3 @@
-{
-  collection: [
-    #/social/(network)
-  || networks <- ['twitter', 'facebook']]
-}
+[
+  #/social/(network)
+|| network <- ['twitter', 'facebook']]

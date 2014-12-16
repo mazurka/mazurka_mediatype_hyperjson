@@ -1,44 +1,53 @@
 #{
-  children => #{
-    <<"test">> => #{
-      children => #{
-        0 => #{
-          line => 2,
+  children => [
+    #{
+      type => tuple,
+      children => [
+        #{
           type => literal,
-          value => <<"baz">>
+          value => <<"test">>
         },
-        1 => #{
-          children => #{
-            0 => #{
+        #{
+          children => [
+            #{
               line => 2,
               type => literal,
-              value => <<"bar">>
+              value => <<"baz">>
             },
-            1 => #{
-              children => #{
-                0 => #{
+            #{
+              children => [
+                #{
                   line => 2,
                   type => literal,
-                  value => <<"foo">>
+                  value => <<"bar">>
                 },
-                1 => #{
-                  line => 2,
-                  type => variable,
-                  value => <<"Test">>
+                #{
+                  children => [
+                    #{
+                      line => 2,
+                      type => literal,
+                      value => <<"foo">>
+                    },
+                    #{
+                      line => 2,
+                      type => variable,
+                      value => <<"Test">>
+                    }
+                  ],
+                  type => call,
+                  value => {'__global',get}
                 }
-              },
+              ],
               type => call,
               value => {'__global',get}
             }
-          },
+          ],
           type => call,
           value => {'__global',get}
         }
-      },
-      type => call,
-      value => {'__global',get}
+      ]
     }
-  },
+  ],
   line => 1,
   type => map
 }.

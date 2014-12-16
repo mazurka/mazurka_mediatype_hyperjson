@@ -1,47 +1,19 @@
-#{
-  children => #{
-    <<"account">> => #{
-      children => #{
-        0 => #{
-          children => #{
-            0 => #{
+#{children => [#{children => [#{type => literal,value => <<"account">>},
+         #{children => [#{children => [#{line => 2,type => literal,value => user_read},
+               #{children => [#{line => 2,type => variable,value => <<"UserID">>}],
+                 line => 2,
+                 type => list}],
               line => 2,
-              type => literal,
-              value => user_read
-            },
-            1 => #{
+              type => call,
+              value => {'__internal','resolve-link'}},
+            #{children => [#{children => [#{type => literal,value => <<"name">>},
+                  #{line => 3,type => variable,value => <<"UserName">>}],
+                 type => tuple}],
               line => 2,
-              type => list,
-              children => #{
-                0 => #{
-                  line => 2,
-                  type => variable,
-                  value => <<"UserID">>
-                }
-              }
-            }
-          },
-          line => 2,
-          type => call,
-          value => {'__internal', 'resolve-link'}
-        },
-        1 => #{
-          children => #{
-            <<"name">> => #{
-              line => 3,
-              type => variable,
-              value => <<"UserName">>
-            }
-          },
-          line => 2,
-          type => map
-        }
-      },
-      line => 2,
-      type => call,
-      value => {'__global',add}
-    }
-  },
-  line => 1,
-  type => map
-}.
+              type => map}],
+           line => 2,
+           type => call,
+           value => {'__global',add}}],
+        type => tuple}],
+     line => 1,
+     type => map}.

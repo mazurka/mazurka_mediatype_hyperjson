@@ -1,96 +1,30 @@
-#{
-  children => #{
-    0 => #{
-      line => 1,
-      type => literal,
-      value => <<"name">>
-    }
-  },
-  line => 1,
-  type => assign,
-  value => <<"name">>
-}.
+#{children => [#{line => 1,type => literal,value => <<"name">>}],
+     line => 1,
+     type => assign,
+     value => <<"name">>}.
 
-#{
-  children => #{
-    #{
-      line => 4,
-      type => variable,
-      value => <<"name">>
-    } => #{
-      children => #{
-        0 => #{
-          children => #{
-            0 => #{
+#{children => [#{children => [#{line => 4,type => variable,value => <<"name">>},
+         #{children => [#{children => [#{line => 4,type => literal,value => user_read},
+               #{children => [],line => 4,type => list}],
               line => 4,
-              type => literal,
-              value => user_read
-            },
-            1 => #{
-              children => #{},
-              line => 4,
-              type => list
-            }
-          },
-          line => 4,
-          type => call,
-          value => {'__internal','resolve-link'}
-        },
-        1 => #{
-          children => #{
-            0 => #{
-              line => 4,
-              type => variable,
-              value => <<"name">>
-            }
-          },
-          line => 4,
-          type => list
-        }
-      },
-      type => call,
-      value => {'__internal','append-hash'}
-    },
-    <<"other">> => #{
-      children => #{
-        0 => #{
-          children => #{
-            0 => #{
+              type => call,
+              value => {'__internal','resolve-link'}},
+            #{children => [#{line => 4,type => variable,value => <<"name">>}],line => 4,type => list}],
+           type => call,
+           value => {'__internal','append-hash'}}],
+        type => tuple},
+      #{children => [#{type => literal,value => <<"other">>},
+         #{children => [#{children => [#{line => 5,type => literal,value => user_read},
+               #{children => [],line => 5,type => list}],
               line => 5,
-              type => literal,
-              value => user_read
-            },
-            1 => #{
-              children => #{},
+              type => call,
+              value => {'__internal','resolve-link'}},
+            #{children => [#{line => 5,type => variable,value => <<"name">>},
+               #{line => 5,type => literal,value => <<"foo">>}],
               line => 5,
-              type => list
-            }
-          },
-          line => 5,
-          type => call,
-          value => {'__internal', 'resolve-link'}
-        },
-        1 => #{
-          children => #{
-            0 => #{
-              line => 5,
-              type => variable,
-              value => <<"name">>
-            },
-            1 => #{
-              line => 5,
-              type => literal,
-              value => <<"foo">>
-            }
-          },
-          line => 5,
-          type => list
-        }
-      },
-      type => call,
-      value => {'__internal', 'append-hash'}
-    }
-  },
-  line => 3,
-  type => map
-}.
+              type => list}],
+           type => call,
+           value => {'__internal','append-hash'}}],
+        type => tuple}],
+     line => 3,
+     type => map}.

@@ -1,28 +1,10 @@
-#{
-  children => #{
-    <<"collection">> => #{
-      children => #{
-        assignment => #{
-          children => #{
-            0 => #{
-              line => 3,
-              type => variable,
-              value => <<"Users">>
-            }
-          },
-          type => assign,
-          value => <<"User">>
-        },
-        expression => #{
-          line => 3,
-          type => variable,
-          value => <<"User">>
-        }
-      },
-      line => 2,
-      type => comprehension
-    }
-  },
-  line => 1,
-  type => map
-}.
+#{children => [#{children => [#{type => literal,value => <<"collection">>},
+         #{children => [#{children => [#{line => 3,type => variable,value => <<"Users">>}],
+              type => assign,
+              value => <<"User">>},
+            #{line => 3,type => variable,value => <<"User">>}],
+           line => 2,
+           type => comprehension}],
+        type => tuple}],
+     line => 1,
+     type => map}.

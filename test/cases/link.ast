@@ -1,29 +1,11 @@
-#{
-  children => #{
-    <<"account">> => #{
-      children => #{
-        0 => #{
-          line => 2,
-          type => literal,
-          value => user_read
-        },
-        1 => #{
-          children => #{
-            0 => #{
+#{children => [#{children => [#{type => literal,value => <<"account">>},
+         #{children => [#{line => 2,type => literal,value => user_read},
+            #{children => [#{line => 2,type => variable,value => <<"UserID">>}],
               line => 2,
-              type => variable,
-              value => <<"UserID">>
-            }
-          },
-          line => 2,
-          type => list
-        }
-      },
-      line => 2,
-      type => call,
-      value => {'__internal', 'resolve-link'}
-    }
-  },
-  line => 1,
-  type => map
-}.
+              type => list}],
+           line => 2,
+           type => call,
+           value => {'__internal','resolve-link'}}],
+        type => tuple}],
+     line => 1,
+     type => map}.
