@@ -1,4 +1,15 @@
-#{children => [#{children => [#{type => literal,value => <<"name">>},
+#{children => [
+    #{
+      type => tuple,
+      line => 1,
+      children => [
+        #{type => literal, line => 1, value => <<"href">>},
+        #{type => call, line => 1, value => {'__internal', resolve}, children => [
+          #{line => 1, type => literal, value => <<"rels">>},
+          #{line => 1, type => literal, value => <<"self">>}
+        ]}
+      ]
+    },#{children => [#{type => literal,value => <<"name">>},
          #{children => [#{children => [#{line => 2,type => literal,value => user_read},
                #{children => [#{line => 2,type => variable,value => <<"UserId">>}],
                  line => 2,

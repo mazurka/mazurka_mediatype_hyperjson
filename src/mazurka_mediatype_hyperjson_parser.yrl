@@ -1,5 +1,6 @@
 Nonterminals
 
+root
 view
 object
 array
@@ -46,7 +47,11 @@ boolean
 '&'
 .
 
-Rootsymbol view.
+Rootsymbol root.
+
+root ->
+  view :
+  maybe_set_href('$1').
 
 view ->
   expression :
@@ -397,6 +402,34 @@ Erlang code.
 -define(line(Tup), element(2, Tup)).
 -define(value(Tup), element(3, Tup)).
 -define(literal(Lit), maps:get(value, Lit)).
+
+maybe_set_href(Exprs) ->
+  case lists:reverse(Exprs) of
+    [Last = #{type := map} | Rest] -> set_href(Last, Rest);
+    _ -> Exprs
+  end.
+
+set_href(#{children := Children, line := Line} = Item, Rest) ->
+  Href = #{
+    line => Line,
+    type => call,
+    value => {'__internal', resolve},
+    children => [
+      to_map({Line, Line, <<"rels">>}, literal),
+      to_map({Line, Line, <<"self">>}, literal)
+    ]
+  },
+  Assoc = #{
+    type => tuple,
+    line => Line,
+    children => [
+      #{type => literal, value => <<"href">>, line => Line},
+      Href
+    ]
+  },
+  Children2 = [Assoc | Children],
+  Item2 = maps:put(children, Children2, Item),
+  lists:reverse([Item2 | Rest]).
 
 to_map({_, Line, Value}, Type) ->
   #{type => Type, line => Line, value => Value}.

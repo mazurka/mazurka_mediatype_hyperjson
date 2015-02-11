@@ -1,5 +1,16 @@
 #{
-  children => [],
+  children => [
+    #{
+      type => tuple,
+      line => 1,
+      children => [
+        #{type => literal, line => 1, value => <<"href">>},
+        #{type => call, line => 1, value => {'__internal', resolve}, children => [
+          #{line => 1, type => literal, value => <<"rels">>},
+          #{line => 1, type => literal, value => <<"self">>}
+        ]}
+      ]
+    }],
   line => 1,
   type => map
 }.

@@ -17,6 +17,17 @@
   children => [
     #{
       type => tuple,
+      line => 3,
+      children => [
+        #{type => literal, line => 3, value => <<"href">>},
+        #{type => call, line => 3, value => {'__internal', resolve}, children => [
+          #{line => 3, type => literal, value => <<"rels">>},
+          #{line => 3, type => literal, value => <<"self">>}
+        ]}
+      ]
+    },
+    #{
+      type => tuple,
       children => [
         #{
           type => literal,
