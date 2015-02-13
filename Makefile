@@ -1,5 +1,5 @@
 # noop
-test: all eunit
+test: eunit
 
 eunit:
 	@rebar eunit

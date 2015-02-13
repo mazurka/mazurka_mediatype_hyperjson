@@ -7,13 +7,17 @@
 -export([to_string/1]).
 -endif.
 
-parse(Src, Opts) ->
-  case mazurka_mediatype_hyperjson_lexer:string(to_string(Src), Opts) of
+parse(Src, #{line := Line}) ->
+  case mazurka_mediatype_hyperjson_lexer:string(to_string(Src), Line) of
     {ok, Tokens, _} ->
       mazurka_mediatype_hyperjson_parser:parse(Tokens);
     Error ->
       Error
-  end.
+  end;
+parse(Src, Opts) when is_map(Opts) ->
+  parse(Src, Opts#{line => 1});
+parse(Src, Opts) when is_list(Opts) ->
+  parse(Src, maps:from_list([{line, 1} | Opts])).
 
 parse_file(File, Opts) ->
   case read_file(File) of
