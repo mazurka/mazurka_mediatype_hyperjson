@@ -8,10 +8,9 @@
 -endif.
 
 parse(Src, Opts) ->
-  case mazurka_mediatype_hyperjson_lexer:string(to_string(Src)) of
+  case mazurka_mediatype_hyperjson_lexer:string(to_string(Src), Opts) of
     {ok, Tokens, _} ->
-      TransformedTokens = transform_tokens(Tokens, [], Opts),
-      mazurka_mediatype_hyperjson_parser:parse(TransformedTokens);
+      mazurka_mediatype_hyperjson_parser:parse(Tokens);
     Error ->
       Error
   end.
@@ -33,7 +32,7 @@ read_file(File) ->
   end.
 
 serialize(Obj) ->
-  json_stringify:from_term(Obj).
+  'Elixir.Poison':'encode_to_iodata!'(Obj).
 
 to_string(Bin) when is_list(Bin) ->
   Bin;
@@ -44,14 +43,3 @@ to_string(Bin) when is_binary(Bin) ->
     _ ->
       binary_to_list(Bin)
   end.
-
-transform_tokens(Tokens, Acc, #{prefix := Prefix} = Opts) when is_atom(Prefix) ->
-  transform_tokens(Tokens, Acc, Opts#{prefix => list_to_binary(atom_to_list(Prefix))});
-transform_tokens([], Acc, _Opts) ->
-  lists:reverse(Acc);
-transform_tokens([{'@',L1},{symbol,L2,Name}|Rest], Acc, #{prefix := Prefix} = Opts) ->
-  transform_tokens(Rest, [{symbol,L2,<<Prefix/binary, Name/binary>>},{'@',L1}|Acc], Opts);
-transform_tokens([Other|Rest], Acc, #{prefix := _} = Opts) ->
-  transform_tokens(Rest, [Other|Acc], Opts);
-transform_tokens(Tokens, _, _) ->
-  Tokens.
