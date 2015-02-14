@@ -1,68 +1,17 @@
-#{
-  children => [
-    #{
-      children => [
-        #{
-          children => [
-            #{
-              line => 3,
-              type => literal,
-              value => <<"twitter">>
-            },
-            #{
-              line => 3,
-              type => literal,
-              value => <<"facebook">>
-            }
-          ],
-          line => 3,
-          type => list
-        }
-      ],
-      type => assign,
-      value => <<"network">>
-    },
-    #{
-      children => [
-        #{
-          children => [
-            #{
-              type => tuple,
-              children => [
-                #{
-                  type => literal,
-                  value => <<"href">>
-                },
-                #{
-                  type => literal,
-                  value => <<>>
-                }
-              ]
-            }
-          ],
-          type => map
-        },
-        #{
-          children => [
-            #{
-              line => 2,
-              type => literal,
-              value => <<"social">>
-            },
-            #{
-              line => 2,
-              type => variable,
-              value => <<"network">>
-            }
-          ],
-          line => 2,
-          type => list
-        }
-      ],
-      type => call,
-      value => {'__internal','append-hash'}
-    }
-  ],
-  line => 1,
-  type => comprehension
-}.
+#{children => [#{children => [#{children => [#{line => 2,type => literal,value => <<"twitter">>},
+            #{line => 2,type => literal,value => <<"facebook">>}],
+           line => 2,
+           type => list}],
+        type => assign,
+        value => <<"network">>},
+      #{children => [#{children => [#{children => [#{type => literal,value => <<"href">>},#{type => literal,value => <<>>}],
+              type => tuple}],
+           type => map},
+         #{children => [#{line => 3,type => literal,value => <<"social">>},
+            #{line => 3,type => variable,value => <<"network">>}],
+           line => 3,
+           type => list}],
+        type => call,
+        value => {'__internal','append-hash'}}],
+     line => 1,
+     type => comprehension}.

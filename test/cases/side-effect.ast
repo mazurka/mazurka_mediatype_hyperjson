@@ -1,0 +1,9 @@
+#{children => [],force => true,line => 1,type => call,value => {do,thing}}.
+#{children => [#{line => 2,type => literal,value => 1},
+      #{line => 2,type => literal,value => 2},
+      #{line => 2,type => literal,value => 3}],
+     force => true,
+     line => 2,
+     type => call,
+     value => {do,other_thing}}.
+#{line => 4,type => literal,value => true}.

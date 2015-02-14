@@ -1,3 +1,4 @@
 {
-  (prop.key): prop.value
-|| prop <- props}
+  each prop in props ->
+    (prop.key): prop.value
+}

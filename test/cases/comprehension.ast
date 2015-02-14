@@ -13,7 +13,7 @@
          #{children => [#{children => [#{line => 3,type => variable,value => <<"Users">>}],
               type => assign,
               value => <<"User">>},
-            #{line => 3,type => variable,value => <<"User">>}],
+            #{line => 4,type => variable,value => <<"User">>}],
            line => 2,
            type => comprehension}],
         type => tuple}],

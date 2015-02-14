@@ -58,6 +58,12 @@ Rules.
 \)                                   :  {token, {')',
                                                  TokenLine}}.
 
+\!\=                                 :  {token, {'!=',
+                                                 TokenLine}}.
+
+\=\=                                 :  {token, {'==',
+                                                 TokenLine}}.
+
 \!                                   :  {token, {'!',
                                                  TokenLine}}.
 
@@ -70,7 +76,7 @@ Rules.
 \@                                   :  {token, {'@',
                                                  TokenLine}}.
 
-<\-                                  :  {token, {'<-',
+-\>                                  :  {token, {'->',
                                                  TokenLine}}.
 
 =                                    :  {token, {'=',
@@ -86,6 +92,12 @@ true                                 :  {token, {boolean,
 false                                :  {token, {boolean,
                                                  TokenLine,
                                                  false}}.
+
+each                                 :  {token, {each,
+                                                 TokenLine}}.
+
+in                                   :  {token, {in,
+                                                 TokenLine}}.
 
 \"[^\"]*\"                           :  {token, {string,
                                                 TokenLine,

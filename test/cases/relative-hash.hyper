@@ -1,3 +1,4 @@
 [
-  #/social/(network)
-|| network <- ['twitter', 'facebook']]
+  each network in ['twitter', 'facebook'] ->
+    #/social/(network)
+]

@@ -1,0 +1,9 @@
+{boolean,1,true}.
+{'&&',1}.
+{boolean,1,false}.
+{'||',1}.
+{boolean,1,true}.
+{'&&',1}.
+{boolean,1,false}.
+{'||',1}.
+{boolean,1,true}.

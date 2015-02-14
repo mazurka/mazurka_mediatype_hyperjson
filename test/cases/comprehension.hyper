@@ -1,5 +1,6 @@
 {
   collection: [
-    User || User <- Users
+    each User in Users ->
+      User
   ]
 }

@@ -13,6 +13,7 @@ expression
 expressions
 literal
 variable
+sideeffect
 call
 funcall
 hash
@@ -27,14 +28,20 @@ symbol
 integer
 float
 boolean
+'each'
+'in'
 '{'
 '}'
 '['
 ']'
 ','
 ':'
-'<-'
+'->'
 '='
+'=='
+'!='
+'!'
+'&&'
 '||'
 '?'
 '('
@@ -49,6 +56,13 @@ boolean
 
 Rootsymbol root.
 
+Right 100 '=' ':'.
+Nonassoc 200 '==' '!='.
+Left 300 '+'.
+Left 400 '||'.
+Left 500 '&&'.
+Unary 600 '!'.
+
 root ->
   view :
   maybe_set_href('$1').
@@ -58,6 +72,9 @@ view ->
   ['$1'].
 view ->
   assignment view :
+  ['$1' | '$2'].
+view ->
+  sideeffect view :
   ['$1' | '$2'].
 
 assignment ->
@@ -82,6 +99,16 @@ expressions ->
   ['$1' | '$3'].
 
 expression ->
+  '!' expression :
+  #{
+    type => call,
+    line => ?line('$1'),
+    value => {'__global', 'not'},
+    children => [
+      '$2'
+    ]
+  }.
+expression ->
   expression dotpath :
   dotpath('$1', '$2').
 expression ->
@@ -90,6 +117,50 @@ expression ->
     type => call,
     line => ?line('$2'),
     value => {'__global', add},
+    children => [
+      '$1',
+      '$3'
+    ]
+  }.
+expression ->
+  expression '||' expression :
+  #{
+    type => call,
+    line => ?line('$2'),
+    value => {'__global', 'or'},
+    children => [
+      '$1',
+      '$3'
+    ]
+  }.
+expression ->
+  expression '&&' expression :
+  #{
+    type => call,
+    line => ?line('$2'),
+    value => {'__global', 'and'},
+    children => [
+      '$1',
+      '$3'
+    ]
+  }.
+expression ->
+  expression '==' expression :
+  #{
+    type => call,
+    line => ?line('$2'),
+    value => {'__global', equals},
+    children => [
+      '$1',
+      '$3'
+    ]
+  }.
+expression ->
+  expression '!=' expression :
+  #{
+    type => call,
+    line => ?line('$2'),
+    value => {'__global', notequals},
     children => [
       '$1',
       '$3'
@@ -200,23 +271,23 @@ conditional ->
   }.
 
 comprehension ->
-  '[' expression '||' symbol '<-' expression ']' :
+  '[' each symbol in expression '->' expression ']' :
   #{
     type => comprehension,
     line => ?line('$1'),
     children => [
       #{
         type => assign,
-        value => ?value('$4'),
+        value => ?value('$3'),
         children => [
-          '$6'
+          '$5'
         ]
       },
-      '$2'
+      '$7'
     ]
   }.
 comprehension ->
-  '{' property '||' symbol '<-' expression '}' :
+  '{' each symbol in expression '->' property '}' :
   #{
     type => call,
     value => {'__global', 'proplist_to_map'},
@@ -227,12 +298,12 @@ comprehension ->
         children => [
           #{
             type => assign,
-            value => ?value('$4'),
+            value => ?value('$3'),
             children => [
-              '$6'
+              '$5'
             ]
           },
-          tuple_to_map('$2')
+          tuple_to_map('$7')
         ]
       }
     ]
@@ -298,6 +369,25 @@ call ->
       '$1',
       '$2'
     ]
+  }.
+
+sideeffect ->
+  symbol ':' symbol '!' '(' ')' :
+  #{
+    type => call,
+    force => true,
+    line => ?line('$1'),
+    value => to_mf('$1', '$3'),
+    children => []
+  }.
+sideeffect ->
+  symbol ':' symbol '!' '(' expressions ')' :
+  #{
+    type => call,
+    force => true,
+    line => ?line('$1'),
+    value => to_mf('$1', '$3'),
+    children => '$6'
   }.
 
 funcall ->
