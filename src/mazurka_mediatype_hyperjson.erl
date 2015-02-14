@@ -7,10 +7,15 @@
 -export([to_string/1]).
 -endif.
 
-parse(Src, #{line := Line}) ->
+parse(Src, #{line := Line} = Opts) ->
   case mazurka_mediatype_hyperjson_lexer:string(to_string(Src), Line) of
     {ok, Tokens, _} ->
-      mazurka_mediatype_hyperjson_parser:parse(Tokens);
+      case mazurka_mediatype_hyperjson_parser:parse(Tokens) of
+        {ok, Ast} ->
+          mazurka_mediatype_hyperjson_sideeffects:transform(Ast, Opts);
+        Error ->
+          Error
+      end;
     Error ->
       Error
   end;

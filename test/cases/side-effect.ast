@@ -1,9 +1,23 @@
-#{children => [],force => true,line => 1,type => call,value => {do,thing}}.
-#{children => [#{line => 2,type => literal,value => 1},
-      #{line => 2,type => literal,value => 2},
-      #{line => 2,type => literal,value => 3}],
-     force => true,
+#{children => [#{children => [],force => true,line => 1,type => call,value => {do,thing}}],
+     line => 1,
+     type => assign,
+     value => <<"do:thing#123537447">>}.
+   #{children => [#{children => [#{line => 2,type => literal,value => 1},
+         #{line => 2,type => literal,value => 2},
+         #{line => 2,type => literal,value => 3}],
+        force => true,
+        line => 2,
+        type => call,
+        value => {do,other_thing}}],
      line => 2,
+     type => assign,
+     value => <<"do:other_thing#113072908">>}.
+   #{children => [#{children => [#{line => 4,type => literal,value => true},
+         #{line => 2,
+           type => variable,
+           value => <<"do:other_thing#113072908">>},
+         #{line => 1,type => variable,value => <<"do:thing#123537447">>}],
+        type => list}],
+     native => true,
      type => call,
-     value => {do,other_thing}}.
-#{line => 4,type => literal,value => true}.
+     value => {erlang,hd}}.
