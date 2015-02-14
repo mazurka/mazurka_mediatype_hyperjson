@@ -62,6 +62,7 @@ Left 300 '+'.
 Left 400 '||'.
 Left 500 '&&'.
 Unary 600 '!'.
+Left 700 '.'.
 
 root ->
   view :
