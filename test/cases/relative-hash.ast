@@ -12,6 +12,7 @@
            line => 3,
            type => list}],
         type => call,
-        value => {'__internal','append-hash'}}],
+        native => true,
+        value => {'mazurka_mediatype_hyperjson_fns','append_hash'}}],
      line => 1,
      type => comprehension}.

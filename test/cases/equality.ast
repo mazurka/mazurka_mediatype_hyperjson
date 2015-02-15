@@ -1,20 +1,23 @@
 #{children => [#{children => [#{line => 1,type => literal,value => <<"foo">>},
          #{line => 1,type => literal,value => <<"bar">>}],
         line => 1,
+        native => true,
         type => call,
-        value => {'__global',equals}}],
+        value => {'mazurka_mediatype_hyperjson_fns',equals}}],
      line => 1,
      type => assign,
      value => <<"first">>}.
 #{children => [#{children => [#{line => 2,type => literal,value => 1},#{line => 2,type => literal,value => 2}],
         line => 2,
+        native => true,
         type => call,
-        value => {'__global',notequals}}],
+        value => {'mazurka_mediatype_hyperjson_fns',notequals}}],
      line => 2,
      type => assign,
      value => <<"second">>}.
 #{children => [#{line => 4,type => variable,value => <<"first">>},
       #{line => 4,type => variable,value => <<"second">>}],
      line => 4,
+     native => true,
      type => call,
-     value => {'__global','and'}}.
+     value => {'mazurka_mediatype_hyperjson_fns','and'}}.

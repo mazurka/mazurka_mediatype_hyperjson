@@ -46,8 +46,9 @@
               value => <<"user">>
             }
           ],
+          native => true,
           type => call,
-          value => {'__global',get}
+          value => {'mazurka_mediatype_hyperjson_fns',get}
         }
       ]
     }

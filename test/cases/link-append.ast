@@ -23,8 +23,9 @@
               line => 2,
               type => map}],
            line => 2,
+           native => true,
            type => call,
-           value => {'__global',add}}],
+           value => {mazurka_mediatype_hyperjson_fns,add}}],
         type => tuple}],
      line => 1,
      type => map}.

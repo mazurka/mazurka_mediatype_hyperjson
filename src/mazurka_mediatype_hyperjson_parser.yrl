@@ -104,7 +104,8 @@ expression ->
   #{
     type => call,
     line => ?line('$1'),
-    value => {'__global', 'not'},
+    value => {?FNS, 'not'},
+    native => true,
     children => [
       '$2'
     ]
@@ -117,7 +118,8 @@ expression ->
   #{
     type => call,
     line => ?line('$2'),
-    value => {'__global', add},
+    value => {?FNS, add},
+    native => true,
     children => [
       '$1',
       '$3'
@@ -128,7 +130,8 @@ expression ->
   #{
     type => call,
     line => ?line('$2'),
-    value => {'__global', 'or'},
+    value => {?FNS, 'or'},
+    native => true,
     children => [
       '$1',
       '$3'
@@ -139,7 +142,8 @@ expression ->
   #{
     type => call,
     line => ?line('$2'),
-    value => {'__global', 'and'},
+    value => {?FNS, 'and'},
+    native => true,
     children => [
       '$1',
       '$3'
@@ -150,7 +154,8 @@ expression ->
   #{
     type => call,
     line => ?line('$2'),
-    value => {'__global', equals},
+    value => {?FNS, equals},
+    native => true,
     children => [
       '$1',
       '$3'
@@ -161,7 +166,8 @@ expression ->
   #{
     type => call,
     line => ?line('$2'),
-    value => {'__global', notequals},
+    value => {?FNS, notequals},
+    native => true,
     children => [
       '$1',
       '$3'
@@ -195,7 +201,8 @@ expression ->
   hash :
   #{
     type => call,
-    value => {'__internal', 'append-hash'},
+    value => {?FNS, append_hash},
+    native => true,
     children => [
       #{
         type => map,
@@ -291,7 +298,8 @@ comprehension ->
   '{' each symbol in expression '->' property '}' :
   #{
     type => call,
-    value => {'__global', 'proplist_to_map'},
+    value => {?FNS, to_map},
+    native => true,
     children => [
       #{
         type => comprehension,
@@ -365,7 +373,8 @@ call ->
   funcall hash :
   #{
     type => call,
-    value => {'__internal', 'append-hash'},
+    value => {?FNS, append_hash},
+    native => true,
     children => [
       '$1',
       '$2'
@@ -490,6 +499,7 @@ dotpath ->
 
 Erlang code.
 
+-define(FNS, mazurka_mediatype_hyperjson_fns).
 -define(line(Tup), element(2, Tup)).
 -define(value(Tup), element(3, Tup)).
 -define(literal(Lit), maps:get(value, Lit)).
@@ -530,7 +540,8 @@ dotpath(A, []) ->
 dotpath(Parent, [Key|Rest]) ->
   dotpath(#{
     type => call,
-    value => {'__global', get},
+    native => true,
+    value => {?FNS, get},
     children => [
       Key,
       Parent

@@ -18,8 +18,9 @@
               type => call,
               value => {'__internal','resolve-link'}},
             #{children => [#{line => 2,type => literal,value => <<"name">>}],line => 2,type => list}],
+           native => true,
            type => call,
-           value => {'__internal','append-hash'}}],
+           value => {mazurka_mediatype_hyperjson_fns,'append_hash'}}],
         type => tuple}],
      line => 1,
      type => map}.

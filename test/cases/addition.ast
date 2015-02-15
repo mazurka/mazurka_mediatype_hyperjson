@@ -12,6 +12,7 @@
     }
   ],
   line => 1,
+  native => true,
   type => call,
-  value => {'__global',add}
+  value => {'mazurka_mediatype_hyperjson_fns',add}
 }.
