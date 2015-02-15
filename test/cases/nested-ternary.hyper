@@ -1,0 +1,5 @@
+status == 'active' ?
+  true :
+  status == 'inactive' ?
+    false :
+    dates:has_passed(end_date)

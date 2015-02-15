@@ -56,7 +56,7 @@ boolean
 
 Rootsymbol root.
 
-Right 100 '=' ':'.
+Right 100 '=' ':' '?'.
 Nonassoc 200 '==' '!='.
 Left 300 '+'.
 Left 400 '||'.
