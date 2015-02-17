@@ -47,8 +47,8 @@ append_hash(Href, undefined) ->
   Href;
 append_hash(Href, nil) ->
   Href;
-append_hash(#{<<"href">> := Href}, Parts) when is_binary(Href) ->
-  append_hash(Href, Parts);
+append_hash(#{<<"href">> := Href} = Obj, Parts) when is_binary(Href) ->
+  Obj#{<<"href">> => append_hash(Href, Parts)};
 append_hash(Href, Parts) when is_binary(Href) andalso is_list(Parts) ->
   iolist_to_binary([Href, <<"#">>, [[<<"/">>, Part] || Part <- Parts]]).
 
