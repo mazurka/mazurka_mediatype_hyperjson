@@ -31,6 +31,7 @@
 add(undefined, undefined) -> undefined;
 add(undefined, B) -> B;
 add(A, undefined) -> A;
+add(A, B) when is_map(A) andalso is_map(B) -> maps:merge(A, B);
 add(A, B) when (is_integer(A) orelse is_float(A)) andalso 
                (is_integer(B) orelse is_float(B)) -> A + B;
 add(A, B) when is_binary(A) andalso is_binary(B) -> <<A/binary, B/binary>>.
