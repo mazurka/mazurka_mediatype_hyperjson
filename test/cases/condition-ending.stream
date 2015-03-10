@@ -1,0 +1,5 @@
+{symbol,1,<<"decision">>}.
+{'?',1}.
+{symbol,1,<<"yes">>}.
+{':',1}.
+{symbol,1,<<"no">>}.

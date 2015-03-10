@@ -267,6 +267,17 @@ conditional ->
     ]
   }.
 conditional ->
+  expression '?' symbol ':' expression :
+  #{
+    type => 'cond',
+    line => ?line('$2'),
+    children => [
+      '$1',
+      to_map('$3', variable),
+      '$5'
+    ]
+  }.
+conditional ->
   expression '?' expression ':' expression :
   #{
     type => 'cond',
