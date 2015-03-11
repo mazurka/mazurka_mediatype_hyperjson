@@ -57,4 +57,5 @@ to_map(undefined) -> undefined;
 to_map(List) -> maps:from_list(List).
 
 get(_, undefined) -> undefined;
-get(Key, Parent) when is_map(Parent) orelse is_list(Parent) -> fast_key:get(Key, Parent).
+get(Key, Parent) when is_map(Parent) orelse is_list(Parent) -> fast_key:get(Key, Parent);
+get(Key, Parent) -> 'Elixir.Dict':get(Parent, Key).
