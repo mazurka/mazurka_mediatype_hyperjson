@@ -95,7 +95,7 @@ funcall -> symbol ':' symbol '(' expressions ')' : call('$1', '$3', '$5', #{}, '
 funcall -> '@' symbol '(' ')' : call('__internal', 'resolve-link', [to_atom('$2'), []], #{}, '$1').
 funcall -> '@' symbol '(' expressions ')' : call('__internal', 'resolve-link', [to_atom('$2'), '$4'], #{}, '$1').
 
-hash -> '#' path : $2.
+hash -> '#' path : '$2'.
 
 path -> '/' symbol : [literal('$2')].
 path -> '/' '(' expression ')' : ['$3'].

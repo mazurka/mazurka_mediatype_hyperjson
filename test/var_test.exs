@@ -29,4 +29,31 @@ defmodule HyperjsonTest.Var do
   var = 1
   [[[[[var]]]]]
   """, [[[[[1]]]]]
+
+  parsetest "should use a qualified variable", """
+  input/name
+  """, ["input", "name"]
+
+  parsetest "should support dot-paths", """
+  foo = {
+    bar: {
+      baz: {
+        value: 1
+      }
+    }
+  }
+  foo.bar.baz.value
+  """, 1
+
+  parsetest "should support dot-path expressions", """
+  foo = {
+    bar: {
+      baz: {
+        value: 1
+      }
+    }
+  }
+  val = 'value'
+  foo.('b' + 'ar').('baz').(val)
+  """, 1
 end

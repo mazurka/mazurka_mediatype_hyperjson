@@ -23,6 +23,9 @@ defmodule HyperjsonTestHelper do
           def resolve(:__internal, :resolve, ["rels", "self"], _, _, _, _) do
             {:ok, "/" <> unquote(name |> String.replace(" ", "-"))}
           end
+          def resolve(:__internal, :"resolve-link", [_, args], _, _, _, _) do
+            {:ok, %{"href" => "/" <> Enum.join(args, "/")}}
+          end
           def resolve(_, _, args, _, _, _, _) do
             {:ok, args}
           end

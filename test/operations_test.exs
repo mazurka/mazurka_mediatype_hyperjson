@@ -9,6 +9,11 @@ defmodule HyperjsonTest.BIF do
   1 + 3.0
   """, 4.0
 
+  parsetest "should use the 'add' bif to merge two objects", """
+  {foo: 'bar'} + {'baz': 'bang'}
+  """, %{"foo" => "bar",
+         "baz" => "bang"}
+
   parsetest "should use the 'not' bif", """
   [
     !true
@@ -23,7 +28,7 @@ defmodule HyperjsonTest.BIF do
   """, [false, true, true, false,
         false, false, false, false]
 
-  parsetest "should use the 'or' bif", """
+  parsetest "should support || operation", """
   [
     'bar' || false
     true || false
@@ -33,7 +38,7 @@ defmodule HyperjsonTest.BIF do
   ]
   """, ["bar", true, false, "foo", nil]
 
-  parsetest "should use the 'and' bif", """
+  parsetest "should support && operation", """
   [
     true && false
     false && false
@@ -42,4 +47,11 @@ defmodule HyperjsonTest.BIF do
     true && 'foo'
   ]
   """, [false, false, false, false, "foo"]
+
+  parsetest "should use the equality bifs", """
+  first = 'foo' == 'bar'
+  second = 1 != 2
+
+  first && second
+  """, false
 end

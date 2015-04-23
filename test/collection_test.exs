@@ -73,4 +73,10 @@ defmodule HyperjsonTest.Collection do
   }
   """, %{"href" => "/should-render-a-map-with-unicode-keys",
          "☃" => "💩"}
+
+  parsetest "should allow expressions inside of objects", """
+  key = 'foo'
+  out = {(key): 'bar'}
+  out
+  """, %{"foo" => "bar"}
 end
