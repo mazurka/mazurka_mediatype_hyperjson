@@ -93,6 +93,9 @@ false                                :  {token, {boolean,
                                                  TokenLine,
                                                  false}}.
 
+null                                 :  {token, {null,
+                                                 TokenLine}}.
+
 each                                 :  {token, {each,
                                                  TokenLine}}.
 

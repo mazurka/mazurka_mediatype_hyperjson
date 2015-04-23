@@ -1,58 +1,12 @@
 Nonterminals
 
-root
-view
-object
-array
-comprehension
-conditional
-property
-properties
-assignment
-expression
-expressions
-literal
-variable
-sideeffect
-call
-funcall
-hash
-path
-dotpath
-.
+root view object array comprehension conditional property properties assignment expression
+expressions literal variable sideeffect call funcall hash path dotpath.
 
 Terminals
 
-string
-symbol
-integer
-float
-boolean
-'each'
-'in'
-'{'
-'}'
-'['
-']'
-','
-':'
-'->'
-'='
-'=='
-'!='
-'!'
-'&&'
-'||'
-'?'
-'('
-')'
-'.'
-'#'
-'/'
-'+'
-'@'
-'&'
-.
+string symbol integer float boolean null 'each' 'in' '{' '}' '[' ']' ',' ':' '->' '=' '=='
+'!=' '!' '&&' '||' '?' '(' ')' '.' '#' '/' '+' '@'.
 
 Rootsymbol root.
 
@@ -64,530 +18,196 @@ Left 500 '&&'.
 Unary 600 '!'.
 Left 700 '.'.
 
-root ->
-  view :
-  maybe_set_href('$1').
+root -> view : maybe_set_href('$1').
 
-view ->
-  expression :
-  ['$1'].
-view ->
-  assignment view :
-  ['$1' | '$2'].
-view ->
-  sideeffect view :
-  ['$1' | '$2'].
+view -> expression : ['$1'].
+view -> assignment view : ['$1' | '$2'].
+view -> expression view : ['$1' | '$2'].
 
-assignment ->
-  symbol '=' expression :
-  #{
-    type => assign,
-    line => ?line('$1'),
-    value => ?value('$1'),
-    children => [
-      '$3'
-    ]
-  }.
+assignment -> symbol '=' expression : assign('$1', '$3').
 
-expressions ->
-  expression :
-  ['$1'].
-expressions ->
-  expression expressions :
-  ['$1' | '$2'].
-expressions ->
-  expression ',' expressions :
-  ['$1' | '$3'].
+expressions -> expression : ['$1'].
+expressions -> expression expressions : ['$1' | '$2'].
+expressions -> expression ',' expressions : ['$1' | '$3'].
 
-expression ->
-  '!' expression :
-  #{
-    type => call,
-    line => ?line('$1'),
-    value => {?FNS, 'not'},
-    native => true,
-    children => [
-      '$2'
-    ]
-  }.
-expression ->
-  expression dotpath :
-  dotpath('$1', '$2').
-expression ->
-  expression '+' expression :
-  #{
-    type => call,
-    line => ?line('$2'),
-    value => {?FNS, add},
-    native => true,
-    children => [
-      '$1',
-      '$3'
-    ]
-  }.
-expression ->
-  expression '||' expression :
-  #{
-    type => call,
-    line => ?line('$2'),
-    value => {?FNS, 'or'},
-    native => true,
-    children => [
-      '$1',
-      '$3'
-    ]
-  }.
-expression ->
-  expression '&&' expression :
-  #{
-    type => call,
-    line => ?line('$2'),
-    value => {?FNS, 'and'},
-    native => true,
-    children => [
-      '$1',
-      '$3'
-    ]
-  }.
-expression ->
-  expression '==' expression :
-  #{
-    type => call,
-    line => ?line('$2'),
-    value => {?FNS, equals},
-    native => true,
-    children => [
-      '$1',
-      '$3'
-    ]
-  }.
-expression ->
-  expression '!=' expression :
-  #{
-    type => call,
-    line => ?line('$2'),
-    value => {?FNS, notequals},
-    native => true,
-    children => [
-      '$1',
-      '$3'
-    ]
-  }.
-expression ->
-  conditional :
-  '$1'.
-expression ->
-  object :
-  '$1'.
-expression ->
-  array :
-  '$1'.
-expression ->
-  comprehension :
-  '$1'.
-expression ->
-  literal :
-  '$1'.
-expression ->
-  variable :
-  '$1'.
-expression ->
-  call '&' :
-  '$1'#{spawn => true}.
-expression ->
-  call :
-  '$1'.
-expression ->
-  hash :
-  #{
-    type => call,
-    value => {?FNS, append_hash},
-    native => true,
-    children => [
-      #{
-        type => map,
-        children => [
-          #{
-            type => tuple,
-            children => [
-              #{
-                type => literal,
-                value => <<"href">>
-              },
-              #{
-                type => literal,
-                value => <<>>
-              }
-            ]
-          }
-        ]
-      },
-      '$1'
-    ]
-  }.
+expression -> '!' expression : bif(not_, ['$2'], '$1').
+expression -> expression dotpath : dotpath('$1', '$2').
+expression -> expression '+' expression : bif(add, ['$1', '$3'], '$2').
+expression -> expression '||' expression : bif(or_, ['$1', '$3'], '$2').
+expression -> expression '&&' expression : bif(and_, ['$1', '$3'], '$2').
+expression -> expression '==' expression : bif(equals, ['$1', '$3'], '$2').
+expression -> expression '!=' expression : bif(notequals, ['$1', '$3'], '$2').
+expression -> conditional : '$1'.
+expression -> object : '$1'.
+expression -> array : '$1'.
+expression -> comprehension : '$1'.
+expression -> literal : '$1'.
+expression -> variable : '$1'.
+expression -> call : '$1'.
+expression -> sideeffect : '$1'.
+expression -> hash : bif(append_hash, [#{<<"href">> => <<>>}, '$1']).
 
-object ->
-  '{' '}' :
-  #{
-    type => map,
-    line => ?line('$1'),
-    children => []
-  }.
-object ->
-  '{' properties '}' :
-  #{
-    type => map,
-    line => ?line('$1'),
-    children => format_properties('$2', [])
-  }.
+object -> '{' '}' : #{}.
+object -> '{' properties '}' : format_properties('$2').
 
-array ->
-  '[' ']' :
-   #{
-     type => list,
-     line => ?line('$1'),
-     children => []
-   }.
-array ->
-  '[' expressions ']' :
-  #{
-    type => list,
-    line => ?line('$1'),
-    children => '$2'
-  }.
+array -> '[' ']' : [].
+array -> '[' expressions ']' : '$2'.
 
-conditional ->
-  expression '?' expression :
-  #{
-    type => 'cond',
-    line => ?line('$2'),
-    children => [
-      '$1',
-      '$3'
-    ]
-  }.
-conditional ->
-  expression '?' symbol ':' expression :
-  #{
-    type => 'cond',
-    line => ?line('$2'),
-    children => [
-      '$1',
-      to_map('$3', variable),
-      '$5'
-    ]
-  }.
-conditional ->
-  expression '?' expression ':' expression :
-  #{
-    type => 'cond',
-    line => ?line('$2'),
-    children => [
-      '$1',
-      '$3',
-      '$5'
-    ]
-  }.
+conditional -> expression '?' expression : cond_('$1', ['$3'], '$2').
+conditional -> expression '?' symbol ':' expression : cond_('$1', [var('$3'), '$5'], '$2').
+conditional -> expression '?' expression ':' expression : cond_('$1', ['$3', '$5'], '$2').
 
-comprehension ->
-  '[' each symbol in expression '->' expression ']' :
-  #{
-    type => comprehension,
-    line => ?line('$1'),
-    children => [
-      #{
-        type => assign,
-        value => ?value('$3'),
-        children => [
-          '$5'
-        ]
-      },
-      '$7'
-    ]
-  }.
-comprehension ->
-  '{' each symbol in expression '->' property '}' :
-  #{
-    type => call,
-    value => {?FNS, to_map},
-    native => true,
-    children => [
-      #{
-        type => comprehension,
-        line => ?line('$1'),
-        children => [
-          #{
-            type => assign,
-            value => ?value('$3'),
-            children => [
-              '$5'
-            ]
-          },
-          tuple_to_map('$7')
-        ]
-      }
-    ]
-  }.
+comprehension -> '[' each symbol in expression '->' expression ']' : comprehension(nil, assign('$3', nil), '$5', '$7', list, '$2').
+comprehension -> '{' each symbol in expression '->' property '}' : comprehension(nil, assign('$3', nil), '$5', '$7', map, '$2').
+comprehension -> '[' each symbol symbol in expression '->' expression ']' : comprehension(assign('$4', nil), assign('$3', nil), '$6', '$8', list, '$2').
+comprehension -> '{' each symbol symbol in expression '->' property '}' : comprehension(assign('$4', nil), assign('$3', nil), '$6', '$8', map, '$2').
+comprehension -> '[' each symbol ',' symbol in expression '->' expression ']' : comprehension(assign('$5', nil), assign('$3', nil), '$7', '$9', list, '$2').
+comprehension -> '{' each symbol ',' symbol in expression '->' property '}' : comprehension(assign('$5', nil), assign('$3', nil), '$7', '$9', map, '$2').
 
-properties ->
-  property :
-  ['$1'].
-properties ->
-  property ',' properties :
-  ['$1' | '$3'].
-properties ->
-  property properties :
-  ['$1' | '$2'].
+properties -> property : ['$1'].
+properties -> property ',' properties : ['$1' | '$3'].
+properties -> property properties : ['$1' | '$2'].
 
-property ->
-  literal ':' expression :
-  {?literal('$1'), '$3'}.
-property ->
-  symbol ':' expression :
-  {?value('$1'), '$3'}.
-property ->
-  '(' expression ')' ':' expression :
-  {'$2', '$5'}.
+property -> literal ':' expression : {literal('$1'), '$3'}.
+property -> symbol ':' expression : {literal('$1'), '$3'}.
+property -> '(' expression ')' ':' expression : {'$2', '$5'}.
 
-literal ->
-  string :
-  to_map('$1', literal).
-literal ->
-  integer :
-  to_map('$1', literal).
-literal ->
-  float :
-  to_map('$1', literal).
-literal ->
-  boolean :
-  to_map('$1', literal).
+literal -> string : literal('$1').
+literal -> integer : literal('$1').
+literal -> float : literal('$1').
+literal -> boolean : literal('$1').
+literal -> null : literal({null, line('$1'), nil}).
 
-variable ->
-  symbol :
-  to_map('$1', variable).
-variable ->
-  symbol '/' symbol :
-  #{
-    line => ?line('$1'),
-    type => call,
-    value => {'__internal', resolve},
-    children => [
-      to_map('$1', literal),
-      to_map('$3', literal)
-    ]
-  }.
+variable -> symbol : var('$1').
+variable -> symbol '/' symbol : nsvar('$1', '$3').
 
-call ->
-  funcall :
-  '$1'.
-call ->
-  funcall hash :
-  #{
-    type => call,
-    value => {?FNS, append_hash},
-    native => true,
-    children => [
-      '$1',
-      '$2'
-    ]
-  }.
+call -> funcall : '$1'.
+call -> funcall hash : bif(append_hash, ['$1', '$2']).
 
-sideeffect ->
-  symbol ':' symbol '!' '(' ')' :
-  #{
-    type => call,
-    force => true,
-    line => ?line('$1'),
-    value => to_mf('$1', '$3'),
-    children => []
-  }.
-sideeffect ->
-  symbol ':' symbol '!' '(' expressions ')' :
-  #{
-    type => call,
-    force => true,
-    line => ?line('$1'),
-    value => to_mf('$1', '$3'),
-    children => '$6'
-  }.
+sideeffect -> symbol ':' symbol '!' '(' ')' : call('$1', '$3', [], #{"throw" => true}, '$1').
+sideeffect -> symbol ':' symbol '!' '(' expressions ')' : call('$1', '$3', '$6', #{"throw" => true}, '$1').
 
-funcall ->
-  symbol '(' ')' :
-  #{
-    type => call,
-    line => ?line('$1'),
-    value => to_mf({symbol, ?line('$1'), <<"__global">>}, '$1'),
-    children => []
-  }.
-funcall ->
-  symbol '(' expressions ')' :
-  #{
-    type => call,
-    line => ?line('$1'),
-    value => to_mf({symbol, ?line('$1'), <<"__global">>}, '$1'),
-    children => '$3'
-  }.
-funcall ->
-  symbol ':' symbol '(' ')' :
-  #{
-    type => call,
-    line => ?line('$1'),
-    value => to_mf('$1', '$3'),
-    children => []
-  }.
-funcall ->
-  symbol ':' symbol '(' expressions ')' :
-  #{
-    type => call,
-    line => ?line('$1'),
-    value => to_mf('$1', '$3'),
-    children => '$5'
-  }.
-funcall ->
-  '@' symbol '(' ')' :
-  #{
-    type => call,
-    line => ?line('$1'),
-    value => {'__internal', 'resolve-link'},
-    children => [
-      to_atom_map('$2'),
-      #{
-        type => list,
-        line => ?line('$1'),
-        children => []
-      }
-    ]
-  }.
-funcall ->
-  '@' symbol '(' expressions ')' :
-  #{
-    type => call,
-    line => ?line('$1'),
-    value => {'__internal', 'resolve-link'},
-    children => [
-      to_atom_map('$2'),
-      #{
-        type => list,
-        line => ?line('$1'),
-        children => '$4'
-      }
-    ]
-  }.
+funcall -> symbol '(' ')' : call('__global', '$1', [], #{}, '$1').
+funcall -> symbol '(' expressions ')' : call('__global', '$1', '$3', #{}, '$1').
+funcall -> symbol ':' symbol '(' ')' : call('$1', '$3', [], #{}, '$1').
+funcall -> symbol ':' symbol '(' expressions ')' : call('$1', '$3', '$5', #{}, '$1').
+%% TODO make these partial calls to ?MODULE:affordance()
+funcall -> '@' symbol '(' ')' : call('__internal', 'resolve-link', [to_atom('$2'), []], #{}, '$1').
+funcall -> '@' symbol '(' expressions ')' : call('__internal', 'resolve-link', [to_atom('$2'), '$4'], #{}, '$1').
 
-hash ->
-  '#' path :
-  #{
-    type => list,
-    line => ?line('$1'),
-    children => '$2'
-  }.
+hash -> '#' path : $2.
 
-path ->
-  '/' symbol :
-  [to_map('$2', literal)].
-path ->
-  '/' '(' expression ')' :
-  ['$3'].
-path ->
-  '/' symbol path :
-  [to_map('$2', literal) | '$3'].
-path ->
-  '/' '(' expression ')' path :
-  ['$3' | '$5'].
+path -> '/' symbol : [literal('$2')].
+path -> '/' '(' expression ')' : ['$3'].
+path -> '/' symbol path : [literal('$2') | '$3'].
+path -> '/' '(' expression ')' path : ['$3' | '$5'].
 
-dotpath ->
-  '.' symbol :
-  [to_map('$2', literal)].
-dotpath ->
-  '.' '(' expression ')' :
-  ['$3'].
-dotpath ->
-  '.' symbol dotpath :
-  [to_map('$2', literal) | '$3'].
-dotpath ->
-  '.' '(' expression ')' dotpath :
-  ['$3' | '$4'].
+dotpath -> '.' symbol : [literal('$2')].
+dotpath -> '.' '(' expression ')' : ['$3'].
+dotpath -> '.' symbol dotpath : [literal('$2') | '$3'].
+dotpath -> '.' '(' expression ')' dotpath : ['$3' | '$4'].
 
 Erlang code.
 
--define(FNS, mazurka_mediatype_hyperjson_fns).
--define(line(Tup), element(2, Tup)).
--define(value(Tup), element(3, Tup)).
--define(literal(Lit), maps:get(value, Lit)).
+-define(STRUCT(Name, Props), maps:merge(#{'__struct__' => 'Elixir.Module':concat(['Etude', 'Node', Name])}, Props)).
+
+bif(Name, Args) ->
+  bif(Name, Args, {nil, 1}).
+bif(Name, Args, Expr) ->
+  ?STRUCT('Call', #{
+    module => 'Elixir.Module':concat(['Mazurka.Mediatype.Hyperjson.Dispatch']),
+    function => to_atom(Name),
+    line => line(Expr),
+    arguments => Args,
+    attrs => #{
+      <<"native">> => true
+    }
+  }).
+
+assign(Name, Expr) ->
+  ?STRUCT('Assign', #{
+    name => to_atom(Name),
+    line => line(Name),
+    expression => Expr
+  }).
+
+call({_, _, Module}, Fun, Args, Attrs, Line) ->
+  call(Module, Fun, Args, Attrs, Line);
+call(Module, {_, _, Fun}, Args, Attrs, Line) ->
+  call(Module, Fun, Args, Attrs, Line);
+call('__global', <<"to_string">>, [Arg], _Attrs, Line) ->
+  bif(to_string, [Arg], Line);
+call(Module, Fun, Args, Attrs, Line) ->
+  ?STRUCT('Call', #{
+    module => to_atom(Module),
+    function => to_atom(Fun),
+    line => line(Line),
+    arguments => Args,
+    attrs => Attrs
+  }).
+
+comprehension(Key, Value, Collection, Expr, Type, Line) ->
+  ?STRUCT('Comprehension', #{
+    collection => Collection,
+    key => Key,
+    value => Value,
+    expression => Expr,
+    type => Type,
+    line => line(Line)
+  }).
+
+cond_(Expr, Arms, Line) ->
+  ?STRUCT('Cond', #{
+    expression => Expr,
+    line => line(Line),
+    arms => Arms
+  }).
+
+var(Var) ->
+  ?STRUCT('Var', #{
+    name => to_atom(Var),
+    line => line(Var)
+  }).
+
+nsvar(NS, Var) ->
+  call('__internal', resolve, [literal(NS), literal(Var)], #{}, NS).
+
+literal({_, _, Val}) ->
+  Val;
+literal(Val) ->
+  Val.
 
 maybe_set_href(Exprs) ->
   case lists:reverse(Exprs) of
-    [Last = #{type := map} | Rest] -> set_href(Last, Rest);
-    _ -> Exprs
+    [#{'__struct__' := _} | _] ->
+      Exprs;
+    [Last | Rest] when is_map(Last) ->
+      Href = call('__internal', resolve, [<<"rels">>, <<"self">>], #{}, 1),
+      Last2 = maps:put(<<"href">>, Href, Last),
+      lists:reverse([Last2 | Rest]);
+    _ ->
+      Exprs
   end.
-
-set_href(#{children := Children, line := Line} = Item, Rest) ->
-  Href = #{
-    line => Line,
-    type => call,
-    value => {'__internal', resolve},
-    children => [
-      to_map({Line, Line, <<"rels">>}, literal),
-      to_map({Line, Line, <<"self">>}, literal)
-    ]
-  },
-  Assoc = #{
-    type => tuple,
-    line => Line,
-    children => [
-      #{type => literal, value => <<"href">>, line => Line},
-      Href
-    ]
-  },
-  Children2 = [Assoc | Children],
-  Item2 = maps:put(children, Children2, Item),
-  lists:reverse([Item2 | Rest]).
-
-to_map({_, Line, Value}, Type) ->
-  #{type => Type, line => Line, value => Value}.
 
 dotpath(A, []) ->
   A;
 dotpath(Parent, [Key|Rest]) ->
-  dotpath(#{
-    type => call,
-    native => true,
-    value => {?FNS, get},
-    children => [
-      Key,
-      Parent
-    ]
-  }, Rest).
+  Call = bif(get, [Parent, Key]),
+  dotpath(Call, Rest).
 
-format_properties([], List) ->
-  lists:reverse(List);
-format_properties([{Key, Expr}|KVs], List) when is_binary(Key) ->
-  Tuple = #{
-    type => tuple,
-    children => [
-      #{type => literal, value => Key},
-      Expr
-    ]
-  },
-  format_properties(KVs, [Tuple|List]);
-format_properties([{Key, Expr}|KVs], List) ->
-  Tuple = #{
-    type => tuple,
-    children => [
-      Key,
-      Expr
-    ]
-  },
-  format_properties(KVs, [Tuple|List]).
+format_properties(List) ->
+  maps:from_list(List).
 
-tuple_to_map(Tuple) ->
-  #{type => tuple, children => tuple_to_list(Tuple)}.
-
+to_atom(Atom) when is_atom(Atom) ->
+  Atom;
+to_atom(Atom) when is_binary(Atom) ->
+  list_to_atom(binary_to_list(Atom));
 to_atom(Atom) ->
-  list_to_atom(binary_to_list(?value(Atom))).
+  list_to_atom(binary_to_list(literal(Atom))).
 
-to_atom_map({Type, Line, _Value} = Atom) ->
-  to_map({Type, Line, to_atom(Atom)}, literal).
-
-to_mf(Mod, Fun) ->
-  {to_atom(Mod), to_atom(Fun)}.
+line(Line) when is_integer(Line) ->
+  Line;
+line(Info) when is_tuple(Info) ->
+  element(2, Info);
+line(#{line := Line}) ->
+  Line.

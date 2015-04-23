@@ -11,3 +11,4 @@ ebin
 _build
 src/*_lexer.erl
 src/*_parser.erl
+mix.lock
