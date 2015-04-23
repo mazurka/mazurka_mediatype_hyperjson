@@ -1,1 +1,0 @@
-user:can_create(UserID) ? @users_create_form()

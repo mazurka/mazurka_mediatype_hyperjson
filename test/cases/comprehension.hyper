@@ -1,6 +1,0 @@
-{
-  collection: [
-    each User in Users ->
-      User
-  ]
-}

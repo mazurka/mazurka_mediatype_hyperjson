@@ -1,4 +1,0 @@
-do:thing!()
-do:other_thing!(1,2,3)
-
-true

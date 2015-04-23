@@ -1,4 +1,0 @@
-first = 'foo' == 'bar'
-second = 1 != 2
-
-first && second

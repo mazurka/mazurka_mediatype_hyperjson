@@ -1,5 +1,0 @@
-#{children => [#{line => 1,type => variable,value => <<"decision">>},
-      #{line => 1,type => variable,value => <<"yes">>},
-      #{line => 1,type => variable,value => <<"no">>}],
-     line => 1,
-     type => 'cond'}.

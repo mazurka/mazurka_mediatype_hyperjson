@@ -1,4 +1,0 @@
-{
-  each prop in props ->
-    (prop.key): prop.value
-}

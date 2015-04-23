@@ -1,1 +1,0 @@
-users:can_create(UserID) ? @users_create_form() : @users_create_annonymous_form()

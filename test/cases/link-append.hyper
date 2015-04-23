@@ -1,5 +1,0 @@
-{
-  account: @user_read(UserID) + {
-    name: UserName
-  }
-}

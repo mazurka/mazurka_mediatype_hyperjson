@@ -1,4 +1,0 @@
-[
-  each network in ['twitter', 'facebook'] ->
-    #/social/(network)
-]
