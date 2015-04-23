@@ -6,24 +6,6 @@ defmodule Mazurka.Mediatype.Hyperjson.Dispatch do
   ]
 
   for f <- falsy do
-    def not_(unquote(f)) do
-      true
-    end
-  end
-  def not_(_), do: false
-
-  for f <- falsy do
-    def or_(unquote(f), val), do: val
-  end
-  def or_(val, _), do: val
-
-  for f <- falsy do
-    def and_(unquote(f), _), do: false
-    def and_(_, unquote(f)), do: false
-  end
-  def and_(_, val), do: val
-
-  for f <- falsy do
     for g <- falsy do
       def add(unquote(f), unquote(g)), do: unquote(f)
     end
