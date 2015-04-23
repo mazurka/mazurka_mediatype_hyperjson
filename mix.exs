@@ -14,6 +14,7 @@ defmodule MazurkaMediatypeHyperjson.Mixfile do
 
   defp deps do
     [{:poison, "~> 1.3.1" },
-     {:etude, "~> 0.1.0" }]
+     {:etude, ">= 0.1.0" },
+     {:mazurka_mediatype, ">= 0.1.0"}]
   end
 end
