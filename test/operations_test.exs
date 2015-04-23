@@ -25,12 +25,13 @@ defmodule HyperjsonTest.BIF do
 
   parsetest "should use the 'or' bif", """
   [
+    'bar' || false
     true || false
     false || false
     false || 'foo'
     false || null
   ]
-  """, [true, false, "foo", nil]
+  """, ["bar", true, false, "foo", nil]
 
   parsetest "should use the 'and' bif", """
   [

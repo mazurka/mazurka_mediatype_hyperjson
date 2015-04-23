@@ -30,11 +30,11 @@ expressions -> expression : ['$1'].
 expressions -> expression expressions : ['$1' | '$2'].
 expressions -> expression ',' expressions : ['$1' | '$3'].
 
-expression -> '!' expression : bif(not_, ['$2'], '$1').
+expression -> '!' expression : cond_('$2', [false, true], '$1').
 expression -> expression dotpath : dotpath('$1', '$2').
 expression -> expression '+' expression : bif(add, ['$1', '$3'], '$2').
-expression -> expression '||' expression : bif(or_, ['$1', '$3'], '$2').
-expression -> expression '&&' expression : bif(and_, ['$1', '$3'], '$2').
+expression -> expression '||' expression : cond_('$1', ['$1', '$3'], '$2').
+expression -> expression '&&' expression : cond_('$1', ['$3', false], '$2').
 expression -> expression '==' expression : bif(equals, ['$1', '$3'], '$2').
 expression -> expression '!=' expression : bif(notequals, ['$1', '$3'], '$2').
 expression -> conditional : '$1'.
