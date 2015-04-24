@@ -3,7 +3,7 @@ defmodule MazurkaMediatypeHyperjson.Mixfile do
 
   def project do
     [app: :mazurka_mediatype_hyperjson,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.0",
      description: "hyper+json mediatype compiler for mazurka",
      package: package,
@@ -21,7 +21,7 @@ defmodule MazurkaMediatypeHyperjson.Mixfile do
   end
 
   defp package do
-    [files: ["lib", "mix.exs", "README*"],
+    [files: ["lib", "src/*.xrl", "src/*.yrl", "mix.exs", "README*"],
      contributors: ["Cameron Bytheway"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/mazurka/mazurka_mediatype_hyperjson"}]
