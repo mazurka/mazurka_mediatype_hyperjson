@@ -1,7 +1,7 @@
 defmodule HyperjsonTestHelper do
   defmacro __using__(_) do
     quote do
-      use ExUnit.Case
+      use ExUnit.Case, async: true
       import HyperjsonTestHelper
     end
   end
@@ -9,16 +9,12 @@ defmodule HyperjsonTestHelper do
   @prefix Module.concat(["Mazurka", "Mediatype", "Test"])
 
   defmacro parsetest(name, str, expected) do
-    line = __CALLER__.line + 1
-    file = __CALLER__.file
     mod = Module.concat([@prefix, to_string(:erlang.phash2(name))])
-
     quote do
       test unquote(name) do
         defmodule unquote(mod) do
           use Etude
-          defetude :render,
-            elem(Mazurka.Mediatype.parse(unquote(line), unquote(file), unquote(str), Mazurka.Mediatype.Hyperjson), 1)
+          defetude :render, unquote(parse(__CALLER__, str))
 
           def resolve(:__internal, :resolve, ["rels", "self"], _, _, _, _) do
             {:ok, "/" <> unquote(name |> String.replace(" ", "-"))}
@@ -34,6 +30,19 @@ defmodule HyperjsonTestHelper do
         assert out == unquote(expected)
       end
     end
+  end
+
+  defmacro defpartial(mod, fun, str) do
+    quote do
+      defmodule unquote(mod) do
+        use Etude
+        defetude unquote(fun), unquote(parse(__CALLER__, str))
+      end
+    end
+  end
+
+  def parse(caller, str) do
+    Macro.escape(elem(Mazurka.Mediatype.parse(caller.line + 1, caller.file, str, Mazurka.Mediatype.Hyperjson), 1))
   end
 end
 
