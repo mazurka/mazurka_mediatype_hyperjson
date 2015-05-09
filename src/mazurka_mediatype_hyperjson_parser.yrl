@@ -168,10 +168,10 @@ cond_(Expr, Arms, Line) ->
   }).
 
 partial(Mod, Fun, Props, Line) ->
-  ?STRUCT('Partial', #{
+  ?STRUCT('MzPartial', #{
     module => to_atom(Mod),
     function => to_atom(Fun),
-    props => Props#{<<"__mz_mediatype__">> => nsvar(mediatype, parsed)},
+    props => Props,
     line => line(Line)
   }).
 

@@ -26,16 +26,20 @@ defmodule HyperjsonTestHelper do
             {:ok, args}
           end
         end
-        {out, _state} = unquote(mod).render(:STATE, &unquote(mod).resolve/7)
+        {out, _state} = unquote(mod).render(%{private: %{}}, &unquote(mod).resolve/7)
         assert out == unquote(expected)
       end
     end
   end
 
   defmacro defpartial(mod, fun, str) do
+    partial = Mazurka.Mediatype.Utils.partial_name(fun)
     quote do
       defmodule unquote(mod) do
         use Etude
+        def unquote(partial)(_type, _subtype, _params, state, resolve, req, scope, props) do
+          unquote(partial)(state, resolve, req, scope, props)
+        end
         defetude unquote(fun), unquote(parse(__CALLER__, str))
       end
     end
