@@ -5,13 +5,13 @@ expressions literal variable sideeffect call funcall hash path dotpath.
 
 Terminals
 
-string symbol integer float boolean null 'each' 'in' '{' '}' '[' ']' ',' ':' '->' '=' '=='
+string symbol integer float boolean null 'each' 'in' '{' '}' '[' ']' ',' ':' '->' '=' '<' '<=' '>' '>=' '=='
 '!=' '!' '&&' '||' '?' '(' ')' '.' '#' '/' '+' '@' '$' '%'.
 
 Rootsymbol root.
 
 Right 100 '=' ':' '?'.
-Nonassoc 200 '==' '!='.
+Nonassoc 200 '==' '!=' '<' '>'.
 Left 300 '+'.
 Left 400 '||'.
 Left 500 '&&'.
@@ -37,6 +37,10 @@ expression -> expression '||' expression : cond_('$1', ['$1', '$3'], '$2').
 expression -> expression '&&' expression : cond_('$1', ['$3', false], '$2').
 expression -> expression '==' expression : bif(equals, ['$1', '$3'], '$2').
 expression -> expression '!=' expression : bif(notequals, ['$1', '$3'], '$2').
+expression -> expression '<' expression : bif(lt, ['$1', '$3'], '$2').
+expression -> expression '<=' expression : bif(lte, ['$1', '$3'], '$2').
+expression -> expression '>' expression : bif(gt, ['$1', '$3'], '$2').
+expression -> expression '>=' expression : bif(gte, ['$1', '$3'], '$2').
 expression -> conditional : '$1'.
 expression -> object : '$1'.
 expression -> array : '$1'.

@@ -34,6 +34,11 @@ defmodule Mazurka.Mediatype.Hyperjson.Dispatch do
   def notequals(a, a), do: false
   def notequals(_, _), do: true
 
+  def lt(a, b), do: a < b
+  def lte(a, b), do: a <= b
+  def gt(a, b), do: a > b
+  def gte(a, b), do: a >= b
+
   def append_hash(href, []), do: href
   for f <- falsy do
     def append_hash(href, unquote(f)), do: href

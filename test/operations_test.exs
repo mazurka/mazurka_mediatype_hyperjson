@@ -54,4 +54,13 @@ defmodule HyperjsonTest.BIF do
 
   first && second
   """, false
+
+  parsetest "should use comparison operators", """
+  [
+    2 < 3
+    4 > 1
+    1 <= 1
+    3 >= 4
+  ]
+  """, [true, true, true, false]
 end
