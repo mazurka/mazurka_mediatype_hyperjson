@@ -22,6 +22,12 @@ defmodule HyperjsonTestHelper do
           def resolve(:__internal, :"resolve-link", [_, args], _, _, _, _) do
             {:ok, %{"href" => "/" <> Enum.join(args, "/")}}
           end
+          def resolve(:organization, :owner_count, [id], _, _, _, _) do
+            {:ok, 3}
+          end
+          def resolve(:users, :get, [id], _, _, _, _) do
+            {:ok, %{}}
+          end
           def resolve(_, _, args, _, _, _, _) do
             {:ok, args}
           end
@@ -33,7 +39,7 @@ defmodule HyperjsonTestHelper do
   end
 
   defmacro defpartial(mod, fun, str) do
-    partial = Mazurka.Mediatype.Utils.partial_name(fun)
+    partial = Mazurka.Mediatype.Parser.Utils.partial_name(fun)
     quote do
       defmodule unquote(mod) do
         use Etude
@@ -46,7 +52,7 @@ defmodule HyperjsonTestHelper do
   end
 
   def parse(caller, str) do
-    Macro.escape(elem(Mazurka.Mediatype.parse(caller.line + 1, caller.file, str, Mazurka.Mediatype.Hyperjson), 1))
+    Macro.escape(IO.inspect(elem(Mazurka.Mediatype.Parser.parse(caller.line + 1, caller.file, str, Mazurka.Mediatype.Parser.Hyperjson), 1)))
   end
 end
 

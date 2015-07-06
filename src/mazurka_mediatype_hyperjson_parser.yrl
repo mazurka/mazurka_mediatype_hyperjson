@@ -123,7 +123,7 @@ bif(Name, Args) ->
   bif(Name, Args, {nil, 1}).
 bif(Name, Args, Expr) ->
   ?STRUCT('Call', #{
-    module => 'Elixir.Module':concat(['Mazurka.Mediatype.Hyperjson.Dispatch']),
+    module => 'Elixir.Module':concat(['Mazurka.Mediatype.Parser.Hyperjson.Dispatch']),
     function => to_atom(Name),
     line => line(Expr),
     arguments => Args,
@@ -172,7 +172,7 @@ cond_(Expr, Arms, Line) ->
   }).
 
 partial(Mod, Fun, Props, Line) ->
-  ?STRUCT('MzPartial', #{
+  ?STRUCT('Partial', #{
     module => to_atom(Mod),
     function => to_atom(Fun),
     props => Props,

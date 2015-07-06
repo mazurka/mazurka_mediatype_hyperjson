@@ -1,4 +1,4 @@
-defmodule Mazurka.Mediatype.Hyperjson do
+defmodule Mazurka.Mediatype.Parser.Hyperjson do
   def parse(src, opts \\ []) do
     line = Keyword.get(opts, :line, 1)
     case :mazurka_mediatype_hyperjson_lexer.string(src, line) do

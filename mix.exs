@@ -17,7 +17,7 @@ defmodule MazurkaMediatypeHyperjson.Mixfile do
   defp deps do
     [{:poison, "~> 1.3.1" },
      {:etude, ">= 0.1.0" },
-     {:mazurka_mediatype, ">= 0.1.0"},
+     {:mazurka_mediatype, ">= 0.2.0"},
      {:parse_trans, github: "uwiger/parse_trans", only: [:dev, :test]}]
   end
 

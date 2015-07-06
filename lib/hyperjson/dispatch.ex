@@ -1,4 +1,4 @@
-defmodule Mazurka.Mediatype.Hyperjson.Dispatch do
+defmodule Mazurka.Mediatype.Parser.Hyperjson.Dispatch do
   falsy = [
     false,
     :undefined,
