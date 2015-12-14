@@ -23,7 +23,7 @@ defmodule MazurkaMediatypeHyperjson.Mixfile do
 
   defp package do
     [files: ["lib", "src/*.xrl", "src/*.yrl", "mix.exs", "README*"],
-     contributors: ["Cameron Bytheway"],
+     maintainers: ["Cameron Bytheway"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/mazurka/mazurka_mediatype_hyperjson"}]
   end
