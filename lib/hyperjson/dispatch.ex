@@ -59,8 +59,22 @@ defmodule Mazurka.Mediatype.Parser.Hyperjson.Dispatch do
 
   for f <- falsy do
     def get(unquote(f), _), do: unquote(f)
+    def get(unquote(f), _, _), do: unquote(f)
   end
-  def get(parent, key), do: Dict.get(parent, key)
+
+  def get(parent, key) when is_atom(key) do
+    Dict.get(parent, key) || Dict.get(parent, Atom.to_string(key))
+  end
+  def get(parent, key) when is_binary(key) do
+    Dict.get(parent, key) || Dict.get(parent, String.to_atom(key))
+  end
+  def get(parent, key) do
+    Dict.get(parent, key)
+  end
+
+  def get(parent, bin_key, atom_key) do
+    Dict.get(parent, bin_key) || Dict.get(parent, atom_key)
+  end
 
   def to_string(arg) do
     Kernel.to_string(arg)
