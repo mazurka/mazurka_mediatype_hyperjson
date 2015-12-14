@@ -213,7 +213,7 @@ maybe_set_href(Exprs) ->
 
 dotpath(A, []) ->
   A;
-dotpath(Parent, [Key|Rest]) when is_binary(key) ->
+dotpath(Parent, [Key|Rest]) when is_binary(Key) ->
   Call = bif(get, [Parent, Key, to_atom(Key)]),
   dotpath(Call, Rest);
 dotpath(Parent, [Key|Rest]) ->
