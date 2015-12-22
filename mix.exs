@@ -3,7 +3,7 @@ defmodule MazurkaMediatypeHyperjson.Mixfile do
 
   def project do
     [app: :mazurka_mediatype_hyperjson,
-     version: "0.2.1",
+     version: "0.2.2",
      elixir: "~> 1.0",
      description: "hyper+json mediatype compiler for mazurka",
      package: package,
