@@ -12,4 +12,8 @@ defmodule HyperjsonTest.Call do
   parsetest "should call nested functions", """
   first(1 second(2 fourth(4) fifth(5)) third(3 sixth(6) seventh(7)))
   """, [1, [2, [4], [5]], [3, [6], [7]]]
+
+  parsetest "should call elixir-namespaced capital modules", """
+  Enum:reverse(1,2,3)
+  """, [3,2,1]
 end

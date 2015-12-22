@@ -147,12 +147,17 @@ call('__global', <<"to_string">>, [Arg], _Attrs, Line) ->
   bif(to_string, [Arg], Line);
 call(Module, Fun, Args, Attrs, Line) ->
   ?STRUCT('Call', #{
-    module => to_atom(Module),
+    module => to_module_name(Module),
     function => to_atom(Fun),
     line => line(Line),
     arguments => Args,
     attrs => Attrs
   }).
+
+to_module_name(<<C, _/binary>> = Name) when C >= 65 andalso C =< 90 ->
+  to_atom(<<"Elixir.", Name/binary>>);
+to_module_name(Name) ->
+  to_atom(Name).
 
 comprehension(Key, Value, Collection, Expr, Type, Line) ->
   ?STRUCT('Comprehension', #{
