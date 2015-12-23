@@ -147,17 +147,12 @@ call('__global', <<"to_string">>, [Arg], _Attrs, Line) ->
   bif(to_string, [Arg], Line);
 call(Module, Fun, Args, Attrs, Line) ->
   ?STRUCT('Call', #{
-    module => to_module_name(Module),
+    module => to_module_hack_atom(Module),
     function => to_atom(Fun),
     line => line(Line),
     arguments => Args,
     attrs => Attrs
   }).
-
-to_module_name(<<C, _/binary>> = Name) when C >= 65 andalso C =< 90 ->
-  to_atom(<<"Elixir.", Name/binary>>);
-to_module_name(Name) ->
-  to_atom(Name).
 
 comprehension(Key, Value, Collection, Expr, Type, Line) ->
   ?STRUCT('Comprehension', #{
@@ -178,7 +173,7 @@ cond_(Expr, Arms, Line) ->
 
 partial(Mod, Fun, Props, Line) ->
   ?STRUCT('Partial', #{
-    module => to_atom(Mod),
+    module => to_module_hack_atom(Mod),
     function => to_atom(Fun),
     props => Props,
     line => line(Line)
@@ -234,6 +229,16 @@ to_atom(Atom) when is_binary(Atom) ->
   list_to_atom(binary_to_list(Atom));
 to_atom(Atom) ->
   list_to_atom(binary_to_list(literal(Atom))).
+
+to_module_hack_atom({_, _, Val}) ->
+  to_module_hack_atom(Val);
+to_module_hack_atom(Atom) when is_atom(Atom) ->
+  to_module_hack_atom(atom_to_binary(Atom, latin1));
+to_module_hack_atom(<<C,_/binary>> = Name) when C >= $A, C =< $Z ->
+  DotedName = binary:replace(Name,<<"_">>,<<".">>,[global]),
+  to_atom(<<"Elixir.",DotedName/binary>>);
+to_module_hack_atom(Name) ->
+  to_atom(Name).
 
 line(Line) when is_integer(Line) ->
   Line;
