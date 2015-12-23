@@ -16,4 +16,8 @@ defmodule HyperjsonTest.Call do
   parsetest "should call elixir-namespaced capital modules", """
   Enum:reverse(1,2,3)
   """, [3,2,1]
+
+  parsetest "should convert '_' to '.'", """
+  String_Chars:to_string([104, 101, 108, 108, 111])
+  """, "hello"
 end
