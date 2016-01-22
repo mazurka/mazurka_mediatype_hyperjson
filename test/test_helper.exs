@@ -28,13 +28,7 @@ defmodule HyperjsonTestHelper do
           def resolve(:users, :get, [id], _, _, _, _) do
             {:ok, %{}}
           end
-          def resolve(Enum, :reverse, args, _, _, _, _) do
-            {:ok, Enum.reverse(args)}
-          end
-          def resolve(String.Chars, :to_string, [arg], _, _, _, _) do
-            {:ok, to_string(arg)}
-          end
-          def resolve(mod, _, args, _, _, _, _) do
+          def resolve(_, _, args, _, _, _, _) do
             {:ok, args}
           end
         end
